@@ -19,9 +19,10 @@ const extractDriveFileId = (value) => {
 const normalizeLocalAssetUrl = (value) => {
   const input = String(value || '').trim();
   if (!input) return '';
+  const baseUrl = String(import.meta.env.BASE_URL || '/');
+  const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
 
   if (
-    input.startsWith('/') ||
     input.startsWith('#') ||
     input.startsWith('data:') ||
     input.startsWith('blob:') ||
@@ -35,7 +36,7 @@ const normalizeLocalAssetUrl = (value) => {
     return input;
   }
 
-  return `/${input.replace(/^\/+/, '')}`;
+  return `${normalizedBase}${input.replace(/^\/+/, '')}`;
 };
 
 export const toEmbeddableGoogleDriveUrl = (value) => {

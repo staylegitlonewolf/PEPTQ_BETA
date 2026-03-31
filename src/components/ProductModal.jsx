@@ -305,7 +305,7 @@ const ProductModal = ({
     <section class="page">
       <div class="doc-header">
         <div class="brand">
-          <img src="${escapePrintHtml(lightLogo || `${window.location.origin}/light.png`)}" alt="PEPTQ logo" />
+          <img src="${escapePrintHtml(lightLogo || toEmbeddableGoogleDriveUrl('light.png'))}" alt="PEPTQ logo" />
           <span class="doc-label">Technical Dossier</span>
         </div>
         <span class="doc-label">${escapePrintHtml(new Date().toLocaleDateString())}</span>

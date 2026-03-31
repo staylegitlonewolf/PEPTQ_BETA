@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon, Search, Users, ShoppingCart, ChevronLeft, ChevronRight, Accessibility, ShieldCheck } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthProvider';
@@ -29,6 +29,7 @@ import { toEmbeddableGoogleDriveUrl } from './utils/driveLinks';
 /* PEPTQ application shell */
 
 const BETA_MODE = import.meta.env.VITE_BETA_MODE === 'true';
+const USE_HASH_ROUTER = import.meta.env.VITE_USE_HASH_ROUTER === 'true';
 const MASTER_GATE_STORAGE_KEY = 'peptq_master_gate_unlocked';
 const SIDEBAR_COLLAPSE_STORAGE_KEY = 'peptq_sidebar_collapsed_v1';
 const GOOGLE_TRANSLATE_RESET_PARAM = 'gt_reset';
@@ -819,11 +820,13 @@ function AccessibilityFilterDefs() {
 }
 
 function App() {
+  const RouterComponent = USE_HASH_ROUTER ? HashRouter : BrowserRouter;
+
   return (
-    <Router>
+    <RouterComponent>
       <AccessibilityFilterDefs />
       <AppLayout />
-    </Router>
+    </RouterComponent>
   );
 }
 

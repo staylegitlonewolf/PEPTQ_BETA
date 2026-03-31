@@ -19,6 +19,16 @@ npm run build:beta
 
 That command writes the beta site into `BETA_WEBSITE_ONLY_FOLDER`.
 
+## GitHub Pages
+
+This repo now includes a GitHub Pages workflow at `.github/workflows/deploy-pages.yml`.
+
+- Push to `main`
+- In GitHub repo settings, set Pages source to `GitHub Actions`
+- The workflow builds `BETA_WEBSITE_ONLY_FOLDER` and publishes it automatically
+
+For Pages builds, the app uses hash routing so routes like `#/apply`, `#/preorder`, and `#/support` work reliably on GitHub Pages.
+
 ## Standard Vite commands
 
 ```powershell

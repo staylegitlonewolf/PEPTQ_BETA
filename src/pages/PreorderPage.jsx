@@ -188,8 +188,7 @@ const PreorderPage = () => {
     }
   };
 
-  const visibleCart = cart.slice(0, MAX_VISIBLE_CART_ITEMS);
-  const hiddenCount = Math.max(0, cart.length - MAX_VISIBLE_CART_ITEMS);
+  const shouldScrollCart = cart.length > MAX_VISIBLE_CART_ITEMS;
 
   return (
     <div className="min-h-screen bg-transparent transition-colors duration-300">
@@ -312,11 +311,11 @@ const PreorderPage = () => {
                   </span>
                 </div>
 
-                <div className="rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 space-y-3">
+                <div className={`rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 space-y-3 ${shouldScrollCart ? 'max-h-[24rem] overflow-y-auto pr-2' : ''}`}>
                   {!cart.length && (
                     <p className="text-sm text-brand-navy/60 dark:text-gray-400 font-medium">{text.emptyCart}</p>
                   )}
-                  {visibleCart.map((item) => (
+                  {cart.map((item) => (
                     <div key={item.handle} className="flex items-center gap-3">
                       <div className="flex-1">
                         <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
@@ -340,13 +339,6 @@ const PreorderPage = () => {
                       </button>
                     </div>
                   ))}
-                  {hiddenCount > 0 && (
-                    <p className="text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400">
-                      {es
-                        ? `+${hiddenCount} artÃ­culo(s) adicionales en el carrito de preorden.`
-                        : `+${hiddenCount} more item(s) saved in your preorder cart.`}
-                    </p>
-                  )}
                 </div>
 
                 <div className="space-y-2">

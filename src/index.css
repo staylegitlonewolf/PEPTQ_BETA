@@ -65,7 +65,13 @@ html.a11y-focus-indicator :focus-visible {
 .goog-te-balloon-frame,
 .VIpgJd-ZVi9od-ORHb,
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+body > .skiptranslate,
+#goog-gt-vt,
+.VIpgJd-yAWNEb-L7lbkb,
+.VIpgJd-yAWNEb-r4nke,
+.VIpgJd-yAWNEb-hvhgNd,
 iframe.goog-te-banner-frame,
+iframe.skiptranslate,
 iframe[src*="translate.google"],
 iframe[src*="translate.googleapis"],
 iframe[src*="translate.goog"] {
@@ -76,9 +82,19 @@ html {
   top: 0 !important;
   margin-top: 0 !important;
 }
+html.translated-ltr,
+html.translated-rtl {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
 body {
   top: 0 !important;
   position: static !important;
+  margin-top: 0 !important;
+}
+body.translated-ltr,
+body.translated-rtl {
+  top: 0 !important;
   margin-top: 0 !important;
 }
 .goog-logo-link {

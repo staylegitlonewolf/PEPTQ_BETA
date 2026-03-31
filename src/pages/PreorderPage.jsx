@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ShieldCheck, Package, Plus, Minus, Trash2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { submitPreorderRequest } from '../services/orderService';
 import { useAccessibility } from '../context/AccessibilityContext';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthProvider';
 
 const inputClasses = 'w-full px-4 py-3 border border-brand-navy/25 dark:border-white/10 rounded-xl bg-white dark:bg-white/5 text-brand-navy dark:text-gray-100 placeholder:text-brand-navy/50 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange transition-all';
 const MAX_VISIBLE_CART_ITEMS = 5;
+const CART_ITEM_GAP_PX = 12;
 
 const DEFAULT_PURITY = 'Purity ≥99% (HPLC-verified)';
 const SKU_CATALOG = [
@@ -53,6 +54,8 @@ const PreorderPage = () => {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
   const [selectedHandle, setSelectedHandle] = useState('');
+  const [cartListMaxHeight, setCartListMaxHeight] = useState('');
+  const cartItemRefs = useRef([]);
 
   const text = {
     title: es ? 'Preorden' : 'Pre-Order',
@@ -190,6 +193,24 @@ const PreorderPage = () => {
 
   const shouldScrollCart = cart.length > MAX_VISIBLE_CART_ITEMS;
 
+  useLayoutEffect(() => {
+    if (!shouldScrollCart) {
+      setCartListMaxHeight('');
+      return;
+    }
+
+    const visibleNodes = cartItemRefs.current
+      .slice(0, MAX_VISIBLE_CART_ITEMS)
+      .filter(Boolean);
+
+    if (!visibleNodes.length) return;
+
+    const totalHeight = visibleNodes.reduce((sum, node) => sum + node.offsetHeight, 0)
+      + (Math.max(visibleNodes.length - 1, 0) * CART_ITEM_GAP_PX);
+
+    setCartListMaxHeight(`${totalHeight}px`);
+  }, [cart, shouldScrollCart]);
+
   return (
     <div className="min-h-screen bg-transparent transition-colors duration-300">
       <section className="py-12 md:py-18 px-6">
@@ -311,34 +332,47 @@ const PreorderPage = () => {
                   </span>
                 </div>
 
-                <div className={`rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4 space-y-3 ${shouldScrollCart ? 'max-h-[24rem] overflow-y-auto pr-2' : ''}`}>
+                <div className="rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 p-4">
                   {!cart.length && (
                     <p className="text-sm text-brand-navy/60 dark:text-gray-400 font-medium">{text.emptyCart}</p>
                   )}
-                  {cart.map((item) => (
-                    <div key={item.handle} className="flex items-center gap-3">
-                      <div className="flex-1">
-                        <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
-                        {item.strength && (
-                          <p className="text-[11px] uppercase tracking-widest text-brand-navy/60 dark:text-gray-400">
-                            {item.strength}
-                          </p>
-                        )}
-                      </div>
-                      <div className="inline-flex items-center gap-2">
-                        <button type="button" onClick={() => updateQty(item.handle, -1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
-                          <Minus size={14} />
-                        </button>
-                        <span className="w-8 text-center font-bold text-brand-navy dark:text-white">{item.qty}</span>
-                        <button type="button" onClick={() => updateQty(item.handle, 1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                      <button type="button" onClick={() => removeItem(item.handle)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50">
-                        <Trash2 size={14} />
-                      </button>
+                  {!!cart.length && (
+                    <div
+                      className={`space-y-3 ${shouldScrollCart ? 'overflow-y-auto pr-2' : ''}`}
+                      style={shouldScrollCart && cartListMaxHeight ? { maxHeight: cartListMaxHeight } : undefined}
+                    >
+                      {cart.map((item, index) => (
+                        <div
+                          key={item.handle}
+                          ref={(node) => {
+                            cartItemRefs.current[index] = node;
+                          }}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="flex-1">
+                            <p className="text-sm font-bold text-brand-navy dark:text-gray-100">{item.title}</p>
+                            {item.strength && (
+                              <p className="text-[11px] uppercase tracking-widest text-brand-navy/60 dark:text-gray-400">
+                                {item.strength}
+                              </p>
+                            )}
+                          </div>
+                          <div className="inline-flex items-center gap-2">
+                            <button type="button" onClick={() => updateQty(item.handle, -1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
+                              <Minus size={14} />
+                            </button>
+                            <span className="w-8 text-center font-bold text-brand-navy dark:text-white">{item.qty}</span>
+                            <button type="button" onClick={() => updateQty(item.handle, 1)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-brand-navy/15 dark:border-white/15 text-brand-navy dark:text-gray-100">
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                          <button type="button" onClick={() => removeItem(item.handle)} className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
 
                 <div className="space-y-2">

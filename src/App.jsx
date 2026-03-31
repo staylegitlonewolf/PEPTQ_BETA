@@ -36,7 +36,7 @@ const GOOGLE_TRANSLATE_RESET_PARAM = 'gt_reset';
 const VERIFIED_WELCOME_STORAGE_KEY = 'peptq_verified_seen';
 const SHOULD_USE_GOVERNANCE_MOCK = true;
 const GOVERNANCE_MOCK_ACTIVE = import.meta.env.VITE_GOVERNANCE_MOCK_ACTIVE !== 'false';
-const GOOGLE_TRANSLATE_ENABLED = import.meta.env.VITE_ENABLE_GOOGLE_TRANSLATE === 'true' || import.meta.env.PROD;
+const GOOGLE_TRANSLATE_ENABLED = import.meta.env.VITE_ENABLE_GOOGLE_TRANSLATE === 'true';
 
 const navItems = [
   { to: '/catalog', label: 'Catalog' },
@@ -113,12 +113,18 @@ const hideGoogleTranslateChrome = () => {
     '.goog-te-balloon-frame',
     '.VIpgJd-ZVi9od-ORHb',
     '.VIpgJd-ZVi9od-aZ2wEe-wOHMyf',
+    '.VIpgJd-yAWNEb-L7lbkb',
+    '.VIpgJd-yAWNEb-r4nke',
+    '.VIpgJd-yAWNEb-hvhgNd',
+    '#goog-gt-vt',
     '#goog-gt-tt',
     '.goog-tooltip',
     '.goog-text-highlight',
     '[aria-label="Good translation"]',
     '[aria-label="Poor translation"]',
+    'body > .skiptranslate',
     'iframe.goog-te-banner-frame',
+    'iframe.skiptranslate',
     'iframe[src*="translate.google"]',
     'iframe[src*="translate.googleapis"]',
     'iframe[src*="translate.goog"]',

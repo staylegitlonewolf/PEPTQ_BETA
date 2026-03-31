@@ -335,8 +335,8 @@ function Sidebar({
   onPortalAccess = () => {},
   supportHref = 'mailto:support@peptq.com',
   supportExternal = false,
-  lightLogo = '/logo.svg',
-  darkLogo = '/logo.svg',
+  lightLogo = '/light.png',
+  darkLogo = '/dark.png',
 }) {
   const { theme, toggleTheme } = useTheme();
   const { language = 'en', setLanguage } = useAccessibility();
@@ -540,7 +540,7 @@ function Sidebar({
   );
 }
 
-function MobileTopNav({ lightLogo = '/logo.svg', darkLogo = '/logo.svg' }) {
+function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png' }) {
   const { theme, toggleTheme } = useTheme();
   const { session, role, isAuthenticated } = useAuth();
   const avatar = String(session?.googlePhotoUrl || session?.profilePhotoUrl || '').trim();
@@ -675,8 +675,8 @@ function Disclaimer({
   language = 'en',
   supportHref = 'mailto:support@peptq.com',
   supportExternal = false,
-  lightLogo = '/logo.svg',
-  darkLogo = '/logo.svg',
+  lightLogo = '/light.png',
+  darkLogo = '/dark.png',
 }) {
   const footerTermsLabel = localizeShellLabel('Terms & Conditions', language);
   const footerPaymentLabel = localizeShellLabel('Payment Policy', language);
@@ -908,9 +908,9 @@ function AppLayout() {
     const raw = getAssetUrl(sectionId, getAssetUrl(assetFallbackId || '', fallback));
     return toEmbeddableGoogleDriveUrl(raw);
   };
-  const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', '/logo.svg', 'light');
-  const darkLogo = getAsset('WEBSITE_DARK_LOGO', '/logo.svg', 'dark');
-  const faviconUrl = getAsset('WEBSITE_FAVICON', '/logo.svg', 'favicon');
+  const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', '/light.png', 'light');
+  const darkLogo = getAsset('WEBSITE_DARK_LOGO', '/dark.png', 'dark');
+  const faviconUrl = getAsset('WEBSITE_FAVICON', '/favicon.png', 'favicon');
   const handleBottomSearchPress = () => {
     if (location.pathname === '/') {
       setIsSearchPanelOpen((prev) => !prev);

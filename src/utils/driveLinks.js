@@ -16,12 +16,34 @@ const extractDriveFileId = (value) => {
   return '';
 };
 
+const normalizeLocalAssetUrl = (value) => {
+  const input = String(value || '').trim();
+  if (!input) return '';
+
+  if (
+    input.startsWith('/') ||
+    input.startsWith('#') ||
+    input.startsWith('data:') ||
+    input.startsWith('blob:') ||
+    input.startsWith('mailto:') ||
+    input.startsWith('tel:')
+  ) {
+    return input;
+  }
+
+  if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(input)) {
+    return input;
+  }
+
+  return `/${input.replace(/^\/+/, '')}`;
+};
+
 export const toEmbeddableGoogleDriveUrl = (value) => {
   const input = String(value || '').trim();
   if (!input) return '';
 
   const fileId = extractDriveFileId(input);
-  if (!fileId) return input;
+  if (!fileId) return normalizeLocalAssetUrl(input);
 
   return `https://drive.google.com/uc?export=view&id=${fileId}`;
 };

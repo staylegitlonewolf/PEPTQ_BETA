@@ -53,7 +53,7 @@ const ProductModal = ({
   const [requestedQuantity, setRequestedQuantity] = useState(Math.max(1, Number(product?.quantity || 1)));
   const { reduceMotion } = useAccessibility();
   const dialogRef = useAccessibleOverlay({ isOpen, onClose });
-  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/logo.svg')));
+  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/light.png')));
   const productState = activeProduct || product || null;
   const stockMeta = resolveStockMeta(productState, 5);
   const canUseManifest = canOrder && stockMeta.inStock;
@@ -305,7 +305,7 @@ const ProductModal = ({
     <section class="page">
       <div class="doc-header">
         <div class="brand">
-          <img src="${escapePrintHtml(lightLogo || `${window.location.origin}/logo.svg`)}" alt="PEPTQ logo" />
+          <img src="${escapePrintHtml(lightLogo || `${window.location.origin}/light.png`)}" alt="PEPTQ logo" />
           <span class="doc-label">Technical Dossier</span>
         </div>
         <span class="doc-label">${escapePrintHtml(new Date().toLocaleDateString())}</span>

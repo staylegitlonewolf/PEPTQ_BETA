@@ -8,8 +8,8 @@ import { useAccessibleOverlay } from '../hooks/useAccessibleOverlay';
 
 function PortalGate({ isOpen, onClose }) {
   const { theme } = useTheme();
-  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/logo.svg')));
-  const darkLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_DARK_LOGO', getAssetUrl('dark', '/logo.svg')));
+  const lightLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_LIGHT_LOGO', getAssetUrl('light', '/light.png')));
+  const darkLogo = toEmbeddableGoogleDriveUrl(getAssetUrl('WEBSITE_DARK_LOGO', getAssetUrl('dark', '/dark.png')));
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');

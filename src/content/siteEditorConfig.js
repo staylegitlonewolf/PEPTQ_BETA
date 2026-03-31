@@ -8,10 +8,10 @@ export const COMING_SOON_SITE_SECTIONS = {
 };
 
 export const COMING_SOON_DEFAULTS = {
-  heroImage: '/hero.png',
-  lightLogo: '/logo.svg',
-  darkLogo: '/logo.svg',
-  favicon: '/logo.svg',
+  heroImage: '/comingsoon_1.png',
+  lightLogo: '/light.png',
+  darkLogo: '/dark.png',
+  favicon: '/favicon.png',
 };
 
 export const WEBSITE_EDITOR_PAGES = [

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import { submitWaitlistEntry } from '../services/waitlistService';
 import { useAccessibility } from '../context/AccessibilityContext';
-import { fetchSiteLayout, getLocalSiteLayout } from '../services/orderService';
+import { fetchSiteLayout, getAssetUrl, getLocalSiteLayout } from '../services/orderService';
 import {
   COMING_SOON_DEFAULTS,
   COMING_SOON_SITE_SECTIONS,
@@ -112,11 +112,8 @@ function ComingSoonPage() {
   };
 
   const heroProductImage = toEmbeddableGoogleDriveUrl(
-    getSiteLayoutText(
-      siteLayoutMap,
-      COMING_SOON_SITE_SECTIONS.HERO_IMAGE,
-      COMING_SOON_DEFAULTS.heroImage
-    )
+    getSiteLayoutText(siteLayoutMap, COMING_SOON_SITE_SECTIONS.HERO_IMAGE, '')
+    || getAssetUrl('comingsoon', COMING_SOON_DEFAULTS.heroImage)
   );
 
   const handleJoinWaitlist = async (event) => {

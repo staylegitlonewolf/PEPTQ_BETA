@@ -155,7 +155,7 @@ function ComingSoonPage() {
           <div>
             <h4 className="mt-6 max-w-3xl text-4xl font-black leading-tight text-[#112e57] dark:text-white sm:text-6xl">
               <span className="block">{text.titleLead}</span>
-              <span className="mt-1 block text-[#ff7a00]">{text.titleAccent}</span>
+              <span className="mt-1 inline-block whitespace-nowrap text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
 
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#28415f] dark:text-gray-300 sm:text-lg">

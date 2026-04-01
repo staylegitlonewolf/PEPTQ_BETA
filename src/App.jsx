@@ -70,6 +70,7 @@ const ownerNavItems = [
 const SHELL_TRANSLATIONS = {
   es: {
     'Catalog': 'Catalogo',
+    'Beta': 'Beta',
     'Search': 'Buscar',
     'Menu': 'Menu',
     'About': 'Acerca de',
@@ -776,15 +777,24 @@ function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png', onOpen
   const avatar = String(session?.googlePhotoUrl || session?.profilePhotoUrl || '').trim();
   const displayName = String(session?.fullName || session?.email || 'Profile').trim();
   const initials = (String(displayName || 'U')[0] || 'U').toUpperCase();
+  const themeButton = (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="h-11 w-11 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
+      aria-label="Toggle theme"
+      title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+    >
+      {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+    </button>
+  );
 
   return (
     <div className="lg:hidden sticky top-0 z-40 bg-white/95 dark:bg-[#0a0a0f]/95 backdrop-blur border-b border-brand-navy/10 dark:border-white/10">
       <div className="px-4 pt-3 pb-2">
         <div className="grid grid-cols-[44px_1fr_auto] items-center gap-2">
           {BETA_MODE ? (
-            <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
-              BETA
-            </div>
+            themeButton
           ) : (
             <Link
               to="/profile"
@@ -813,15 +823,7 @@ function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png', onOpen
               className="h-11 w-11"
               size={18}
             />
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="h-11 w-11 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
-              aria-label="Toggle theme"
-              title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
+            {!BETA_MODE && themeButton}
           </div>
         </div>
 
@@ -867,18 +869,26 @@ function MobileBottomNav({ role, isApprovedRole = false, onPrimaryPress = () => 
   const primaryLink = BETA_MODE
     ? { kind: 'action', label: 'Menu', Icon: Menu }
     : { kind: 'action', label: 'Search', Icon: Search };
+  const betaHomeLink = { to: '/', label: 'Beta', Icon: ShieldCheck };
 
-  const links = isOwnerRole
+  const links = BETA_MODE
     ? [
+      betaHomeLink,
       primaryLink,
-      { to: '/owner?tab=fulfillment', label: 'Orders', Icon: ShoppingCart },
-      { to: '/owner?tab=membership', label: 'Members', Icon: Users },
-    ]
-    : [
-      primaryLink,
-      { to: isApprovedRole ? '/ledger' : '/apply', label: isApprovedRole ? 'Orders' : 'Access', Icon: ShoppingCart },
+      { to: '/apply', label: 'Access', Icon: ShoppingCart },
       { to: catalogTarget, label: 'Catalog', Icon: Users },
-    ];
+    ]
+    : (isOwnerRole
+      ? [
+        primaryLink,
+        { to: '/owner?tab=fulfillment', label: 'Orders', Icon: ShoppingCart },
+        { to: '/owner?tab=membership', label: 'Members', Icon: Users },
+      ]
+      : [
+        primaryLink,
+        { to: isApprovedRole ? '/ledger' : '/apply', label: isApprovedRole ? 'Orders' : 'Access', Icon: ShoppingCart },
+        { to: catalogTarget, label: 'Catalog', Icon: Users },
+      ]);
 
   const localizedLinks = links.map((link) => ({
     ...link,
@@ -887,7 +897,7 @@ function MobileBottomNav({ role, isApprovedRole = false, onPrimaryPress = () => 
 
   return (
     <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-brand-navy/10 dark:border-white/10 bg-white/95 dark:bg-[#0a0a0f]/95 backdrop-blur pb-safe">
-      <div className="px-2 py-2 grid grid-cols-3 gap-1">
+      <div className={`px-2 py-2 grid ${BETA_MODE ? 'grid-cols-4' : 'grid-cols-3'} gap-1`}>
         {localizedLinks.map((item) => {
           if (item.kind === 'action') {
             const ActionIcon = item.Icon || Search;

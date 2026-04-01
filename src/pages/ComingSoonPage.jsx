@@ -153,9 +153,9 @@ function ComingSoonPage() {
       <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
         <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-8 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <h4 className="mt-6 max-w-3xl text-4xl font-black leading-tight text-[#112e57] dark:text-white sm:text-6xl">
+            <h4 className="mt-6 max-w-3xl whitespace-nowrap text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.05] text-[#112e57] dark:text-white sm:text-6xl">
               <span className="inline">{text.titleLead} </span>
-              <span className="inline whitespace-nowrap text-[#ff7a00]">{text.titleAccent}</span>
+              <span className="inline text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
 
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#28415f] dark:text-gray-300 sm:text-lg">
@@ -164,7 +164,7 @@ function ComingSoonPage() {
 
             <div className="mt-4 flex items-center justify-center lg:hidden">
               <div className="relative inline-block">
-                <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
+                <div className="pointer-events-none absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
                   {text.heroRibbon}
                 </div>
                 <img
@@ -172,7 +172,7 @@ function ComingSoonPage() {
                   alt="PEPTQ hero product"
                   width="1024"
                   height="1024"
-                  className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
+                  className="relative z-0 mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
                 />
               </div>
             </div>
@@ -275,7 +275,7 @@ function ComingSoonPage() {
 
           <div className="hidden items-center justify-center lg:flex">
             <div className="relative inline-block">
-              <div className="pointer-events-none absolute left-6 top-6 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
+              <div className="pointer-events-none absolute left-1/2 top-6 z-10 -translate-x-1/2 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
                 {text.heroRibbon}
               </div>
               <img
@@ -283,7 +283,7 @@ function ComingSoonPage() {
                 alt="PEPTQ hero product"
                 width="1024"
                 height="1024"
-                className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
+                className="relative z-0 mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
               />
             </div>
           </div>

@@ -100,6 +100,20 @@ const localizeShellLabel = (label, language = 'en') => {
   return SHELL_TRANSLATIONS.es?.[label] || label;
 };
 
+function AccessibilityTriggerButton({ onClick = () => {}, className = '', size = 18 }) {
+  return (
+    <button
+      type="button"
+      aria-label="Open accessibility quick settings"
+      title="Accessibility settings"
+      onClick={onClick}
+      className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border border-brand-orange/40 bg-white dark:bg-white/5 text-brand-orange shadow-sm hover:bg-brand-orange hover:text-white transition-colors ${className}`}
+    >
+      <Accessibility size={size} />
+    </button>
+  );
+}
+
 const hideGoogleTranslateChrome = () => {
   if (typeof document === 'undefined') return;
 
@@ -336,6 +350,7 @@ function Sidebar({
   showNotice = true,
   isCollapsed = false,
   onToggleCollapse = () => {},
+  onOpenAccessibility = () => {},
   isAuthenticated = false,
   role = 'GUEST',
   session = null,
@@ -379,15 +394,17 @@ function Sidebar({
           <ChevronLeft size={16} className="mx-auto" />
         </button>
 
-        <div className="mb-10 grid grid-cols-[40px_1fr_40px] items-center">
-          <button
-            onClick={toggleTheme}
-            className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
-            aria-label="Toggle theme"
-            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-          >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-          </button>
+        <div className="mb-10 grid grid-cols-[40px_1fr_auto] items-center gap-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
+              aria-label="Toggle theme"
+              title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+          </div>
 
           <Link to="/" className="justify-self-center">
             <img
@@ -397,7 +414,13 @@ function Sidebar({
             />
           </Link>
 
-          <span aria-hidden="true" className="h-10 w-10" />
+          <div className="justify-self-end">
+            <AccessibilityTriggerButton
+              onClick={onOpenAccessibility}
+              className="h-10 w-10"
+              size={18}
+            />
+          </div>
         </div>
 
         {!BETA_MODE && (
@@ -747,7 +770,7 @@ function MobileMenuDrawer({
   );
 }
 
-function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png' }) {
+function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png', onOpenAccessibility = () => {} }) {
   const { theme, toggleTheme } = useTheme();
   const { session, role, isAuthenticated } = useAuth();
   const avatar = String(session?.googlePhotoUrl || session?.profilePhotoUrl || '').trim();
@@ -757,7 +780,7 @@ function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png' }) {
   return (
     <div className="lg:hidden sticky top-0 z-40 bg-white/95 dark:bg-[#0a0a0f]/95 backdrop-blur border-b border-brand-navy/10 dark:border-white/10">
       <div className="px-4 pt-3 pb-2">
-        <div className="grid grid-cols-[44px_1fr_44px] items-center">
+        <div className="grid grid-cols-[44px_1fr_auto] items-center gap-2">
           {BETA_MODE ? (
             <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
               BETA
@@ -784,15 +807,22 @@ function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png' }) {
             />
           </Link>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="h-11 w-11 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200 justify-self-end"
-            aria-label="Toggle theme"
-            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-          >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-          </button>
+          <div className="justify-self-end flex items-center gap-2">
+            <AccessibilityTriggerButton
+              onClick={onOpenAccessibility}
+              className="h-11 w-11"
+              size={18}
+            />
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="h-11 w-11 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
+              aria-label="Toggle theme"
+              title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+          </div>
         </div>
 
         {!BETA_MODE && (
@@ -899,12 +929,15 @@ function Disclaimer({
   supportExternal = false,
   lightLogo = '/light.png',
   darkLogo = '/dark.png',
+  isA11yPanelOpen = false,
+  onOpenAccessibility = () => {},
+  onCloseAccessibility = () => {},
+  showFloatingAccessibility = true,
 }) {
   const footerTermsLabel = localizeShellLabel('Terms & Conditions', language);
   const footerPaymentLabel = localizeShellLabel('Payment Policy', language);
   const footerAboutLabel = localizeShellLabel('About', language);
   const footerSupportLabel = localizeShellLabel('Support', language);
-  const [isA11yPanelOpen, setIsA11yPanelOpen] = useState(false);
 
   return (
     <>
@@ -948,18 +981,20 @@ function Disclaimer({
       ) : null}
 
       <>
-        <button
-          type="button"
-          aria-label="Open accessibility quick settings"
-          title="Accessibility settings"
-          onClick={() => setIsA11yPanelOpen(true)}
-          className="fixed right-4 top-20 lg:top-5 z-55 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-orange/50 bg-white/90 dark:bg-[#111827]/90 text-brand-orange shadow-xl backdrop-blur hover:bg-brand-orange hover:text-white transition-colors"
-        >
-          <Accessibility size={18} />
-        </button>
+        {showFloatingAccessibility && (
+          <button
+            type="button"
+            aria-label="Open accessibility quick settings"
+            title="Accessibility settings"
+            onClick={onOpenAccessibility}
+            className="fixed right-4 top-20 lg:top-5 z-55 inline-flex h-11 w-11 items-center justify-center rounded-full border border-brand-orange/50 bg-white/90 dark:bg-[#111827]/90 text-brand-orange shadow-xl backdrop-blur hover:bg-brand-orange hover:text-white transition-colors"
+          >
+            <Accessibility size={18} />
+          </button>
+        )}
 
         {isA11yPanelOpen && (
-          <div className="fixed inset-0 z-60 flex items-stretch justify-end bg-transparent" onClick={() => setIsA11yPanelOpen(false)}>
+          <div className="fixed inset-0 z-60 flex items-stretch justify-end bg-transparent" onClick={onCloseAccessibility}>
             <aside
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-md h-full bg-white dark:bg-[#0a0a0f] shadow-2xl border-l border-brand-navy/10 dark:border-white/10 p-5 overflow-y-auto"
@@ -978,7 +1013,7 @@ function Disclaimer({
                 </div>
                 <button
                   type="button"
-                  onClick={() => setIsA11yPanelOpen(false)}
+                  onClick={onCloseAccessibility}
                   className="text-sm font-bold text-brand-navy dark:text-gray-200 hover:text-brand-orange"
                 >
                   Close
@@ -1068,6 +1103,7 @@ function AppLayout() {
   };
   const [isSearchPanelOpen, setIsSearchPanelOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isA11yPanelOpen, setIsA11yPanelOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.localStorage.getItem(SIDEBAR_COLLAPSE_STORAGE_KEY) === '1';
@@ -1152,6 +1188,11 @@ function AppLayout() {
   const handleSidebarPortalAccess = () => {
     navigate('/profile');
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -1363,6 +1404,7 @@ function AppLayout() {
           showNotice={showGuestWarning}
           isCollapsed={isSidebarCollapsed}
           onToggleCollapse={() => setIsSidebarCollapsed(true)}
+          onOpenAccessibility={() => setIsA11yPanelOpen(true)}
           isAuthenticated={!!session}
           role={role}
           session={session}
@@ -1400,7 +1442,11 @@ function AppLayout() {
             darkLogo={darkLogo}
           />
 
-          <MobileTopNav lightLogo={lightLogo} darkLogo={darkLogo} />
+          <MobileTopNav
+            lightLogo={lightLogo}
+            darkLogo={darkLogo}
+            onOpenAccessibility={() => setIsA11yPanelOpen(true)}
+          />
 
           <main id="main-content" className="pb-20 lg:pb-0">
             <Routes>
@@ -1498,6 +1544,10 @@ function AppLayout() {
             supportExternal={!isPageEnabled('support_page')}
             lightLogo={lightLogo}
             darkLogo={darkLogo}
+            isA11yPanelOpen={isA11yPanelOpen}
+            onOpenAccessibility={() => setIsA11yPanelOpen(true)}
+            onCloseAccessibility={() => setIsA11yPanelOpen(false)}
+            showFloatingAccessibility={!isMobile && isSidebarCollapsed}
           />
           <MobileBottomNav
             role={role}

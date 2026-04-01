@@ -47,7 +47,8 @@ function ComingSoonPage() {
   const siteLayoutMap = buildSiteLayoutMap(siteLayoutEntries);
 
   const text = {
-    title: es ? 'Unete a la lista de espera para acceso temprano' : 'Join the waitlist for early access',
+    titleLead: es ? 'Unete a la lista de espera para' : 'Join the waitlist for',
+    titleAccent: es ? 'acceso temprano' : 'early access',
     subtitle: es
       ? 'Accede a compuestos de investigacion verificados con acceso prioritario a nuestro registro validado por HPLC.'
       : 'Access Verified Research Compounds for priority access to our HPLC-verified compound registry.',
@@ -153,7 +154,8 @@ function ComingSoonPage() {
         <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-8 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h4 className="mt-6 max-w-3xl text-4xl font-black leading-tight text-[#112e57] dark:text-white sm:text-6xl">
-              {text.title}
+              <span className="block">{text.titleLead}</span>
+              <span className="mt-1 block text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
 
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#28415f] dark:text-gray-300 sm:text-lg">

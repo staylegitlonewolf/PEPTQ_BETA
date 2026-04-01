@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Sun, Moon, Search, Users, ShoppingCart, ChevronLeft, ChevronRight, Accessibility, ShieldCheck } from 'lucide-react';
+import { Sun, Moon, Search, Users, ShoppingCart, ChevronLeft, ChevronRight, Accessibility, ShieldCheck, Menu, X } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthProvider';
 import { useAccessibility } from './context/AccessibilityContext';
@@ -71,6 +71,7 @@ const SHELL_TRANSLATIONS = {
   es: {
     'Catalog': 'Catalogo',
     'Search': 'Buscar',
+    'Menu': 'Menu',
     'About': 'Acerca de',
     'Mission': 'Mision',
     'Payment & Ordering': 'Pago y Pedidos',
@@ -420,6 +421,14 @@ function Sidebar({
           </Link>
         )}
 
+        {BETA_MODE && (
+          <div className="mb-6">
+            <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
+              BETA
+            </div>
+          </div>
+        )}
+
         <nav className="flex flex-col gap-2">
           {navItemsList.map((item) => (
             <NavLink
@@ -535,14 +544,206 @@ function Sidebar({
           </div>
         ) : null}
 
+      </div>
+    </aside>
+  );
+}
+
+function MobileMenuDrawer({
+  isOpen = false,
+  onClose = () => {},
+  navItemsList,
+  showNotice = true,
+  isAuthenticated = false,
+  session = null,
+  onPortalAccess = () => {},
+  supportHref = 'mailto:support@peptq.com',
+  supportExternal = false,
+  lightLogo = '/light.png',
+  darkLogo = '/dark.png',
+}) {
+  const { theme, toggleTheme } = useTheme();
+  const { language = 'en', setLanguage } = useAccessibility();
+  const avatar = String(session?.googlePhotoUrl || session?.profilePhotoUrl || '').trim();
+  const displayName = String(session?.fullName || session?.email || 'Login').trim();
+  const initials = (String(displayName || 'U')[0] || 'U').toUpperCase();
+
+  const quickSetLanguage = (lang) => {
+    setLanguage(lang);
+    try {
+      if (GOOGLE_TRANSLATE_ENABLED) {
+        quickSetGoogleLanguage(lang);
+      }
+    } catch {
+      // noop
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="lg:hidden fixed inset-0 z-60 bg-[#05070d]/45 backdrop-blur-sm" onClick={onClose}>
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
+        onClick={(event) => event.stopPropagation()}
+        className="h-full w-[min(20rem,86vw)] overflow-y-auto border-r border-brand-navy/10 dark:border-white/10 bg-white dark:bg-[#0a0a0f] px-5 py-6 shadow-2xl"
+      >
+        <div className="mb-8 grid grid-cols-[40px_1fr_40px] items-center">
+          <button
+            onClick={toggleTheme}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 hover:bg-brand-navy dark:hover:bg-brand-orange hover:text-white transition text-brand-navy dark:text-gray-200"
+            aria-label="Toggle theme"
+            title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+
+          <Link to="/" onClick={onClose} className="justify-self-center">
+            <img
+              src={theme === 'dark' ? darkLogo : lightLogo}
+              alt="PEPTQ logo"
+              className="h-10 w-auto"
+            />
+          </Link>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-brand-navy/20 dark:border-white/20 bg-white dark:bg-white/5 text-brand-navy dark:text-gray-200 hover:text-brand-orange transition-colors"
+            aria-label="Close menu"
+            title="Close menu"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {!BETA_MODE && (
+          <Link
+            to="/profile"
+            onClick={onClose}
+            className="mb-6 flex items-center gap-2.5 rounded-xl border border-brand-navy/15 dark:border-white/10 bg-white/70 dark:bg-white/5 px-2.5 py-2 hover:border-brand-orange/35 transition-colors"
+            aria-label="Open profile"
+          >
+            {avatar ? (
+              <img src={avatar} alt="Profile avatar" className="h-7 w-7 shrink-0 rounded-full object-cover border border-brand-orange/20" aria-hidden="true" />
+            ) : (
+              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-orange/15 text-[10px] font-black text-brand-orange" aria-hidden="true">
+                {initials}
+              </span>
+            )}
+            <span className="min-w-0">
+              <span className="block truncate text-[12px] font-black text-brand-navy dark:text-gray-100 leading-tight">
+                {isAuthenticated ? displayName : 'Login'}
+              </span>
+            </span>
+          </Link>
+        )}
+
         {BETA_MODE && (
-          <div className="mt-4 text-[13px] font-black text-brand-navy/60 dark:text-gray-400">
-            BETA BUILD
+          <div className="mb-6">
+            <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
+              BETA
+            </div>
           </div>
         )}
 
-      </div>
-    </aside>
+        <nav className="flex flex-col gap-2">
+          {navItemsList.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-lg text-sm font-montserrat font-bold transition-colors ${
+                  isActive
+                    ? 'bg-brand-orange/10 text-brand-orange'
+                    : 'text-brand-navy dark:text-gray-200 hover:text-brand-orange dark:hover:text-brand-orange hover:bg-brand-navy/5 dark:hover:bg-white/5'
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="mt-6">
+          <p className="text-[10px] font-black uppercase tracking-widest text-brand-navy/55 dark:text-white/55 mb-1">
+            Language Assist
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              onClick={() => quickSetLanguage('en')}
+              aria-pressed={language === 'en'}
+              className={`flex-1 rounded-lg border text-xs font-bold py-1 transition-colors ${
+                language === 'en'
+                  ? 'border-brand-navy/35 dark:border-white/30 bg-brand-navy text-white dark:bg-white dark:text-brand-navy'
+                  : 'border-brand-navy/15 dark:border-white/20 bg-white dark:bg-white/10 text-brand-navy dark:text-gray-100'
+              }`}
+            >
+              English
+            </button>
+            <button
+              type="button"
+              onClick={() => quickSetLanguage('es')}
+              aria-pressed={language === 'es'}
+              className={`flex-1 rounded-lg border text-xs font-bold py-1 transition-colors ${
+                language === 'es'
+                  ? 'border-brand-orange bg-brand-orange text-white'
+                  : 'border-brand-orange/40 bg-brand-orange/10 text-brand-orange'
+              }`}
+            >
+              {'EspaÃ±ol'}
+            </button>
+          </div>
+        </div>
+
+        {showNotice ? (
+          <div className="mt-8 rounded-xl border border-brand-navy/10 dark:border-white/10 bg-brand-orange/5 dark:bg-white/5 p-3">
+            <p className="text-[10px] font-black uppercase tracking-widest text-brand-orange mb-1">
+              Notice
+            </p>
+            <p className="text-[11px] leading-relaxed text-brand-navy/75 dark:text-gray-300 font-semibold">
+              For Research and Educational Purposes Only.
+            </p>
+            <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
+              Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. Statements on this site have not been evaluated by the U.S. Food and Drug Administration.
+            </p>
+            {supportExternal ? (
+              <a
+                href={supportHref}
+                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+              >
+                Contact Us
+              </a>
+            ) : (
+              <Link
+                to={supportHref}
+                onClick={onClose}
+                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+              >
+                Contact Us
+              </Link>
+            )}
+            {!isAuthenticated && !BETA_MODE && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onPortalAccess();
+                }}
+                className="mt-3 inline-flex items-center justify-center rounded-lg bg-brand-orange px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[#e06d00]"
+              >
+                PORTAL
+              </button>
+            )}
+          </div>
+        ) : null}
+      </aside>
+    </div>
   );
 }
 
@@ -594,38 +795,37 @@ function MobileTopNav({ lightLogo = '/light.png', darkLogo = '/dark.png' }) {
           </button>
         </div>
 
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <div className="min-w-0">
-            {BETA_MODE ? (
-              <p className="text-[10px] font-black uppercase tracking-widest text-brand-navy/70 dark:text-white/70">YOU ARE A BETA TESTER</p>
-            ) : (
-              isAuthenticated ? (
+        {!BETA_MODE && (
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              {isAuthenticated ? (
                 <>
                   <p className="text-xs font-black text-brand-navy dark:text-white truncate">{displayName}</p>
                   <p className="text-[10px] uppercase tracking-widest text-brand-navy/55 dark:text-white/55 font-black">{role}</p>
                 </>
               ) : (
                 <p className="text-[10px] font-black uppercase tracking-widest text-brand-navy/55 dark:text-white/55">Login</p>
-              )
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
 }
 
-function MobileBottomNav({ role, isApprovedRole = false, onSearchPress = () => {}, isSearchPanelOpen = false, catalogTarget = '/catalog' }) {
+function MobileBottomNav({ role, isApprovedRole = false, onPrimaryPress = () => {}, isPrimaryPanelOpen = false, catalogTarget = '/catalog' }) {
   const location = useLocation();
   const { language = 'en' } = useAccessibility();
   const isOwnerRole = role === 'OWNER';
   const currentTab = new URLSearchParams(location.search).get('tab');
 
-  const isLinkActive = (to) => {
-    if (to === '/') {
-      return location.pathname === '/' && isSearchPanelOpen;
+  const isLinkActive = (item) => {
+    if (item.kind === 'action') {
+      return isPrimaryPanelOpen;
     }
 
+    const { to } = item;
     if (to.startsWith('/owner?tab=')) {
       const tab = to.split('tab=')[1] || '';
       return location.pathname === '/owner' && currentTab === tab;
@@ -634,14 +834,18 @@ function MobileBottomNav({ role, isApprovedRole = false, onSearchPress = () => {
     return location.pathname === to;
   };
 
+  const primaryLink = BETA_MODE
+    ? { kind: 'action', label: 'Menu', Icon: Menu }
+    : { kind: 'action', label: 'Search', Icon: Search };
+
   const links = isOwnerRole
     ? [
-      { to: '/', label: 'Search', Icon: Search },
+      primaryLink,
       { to: '/owner?tab=fulfillment', label: 'Orders', Icon: ShoppingCart },
       { to: '/owner?tab=membership', label: 'Members', Icon: Users },
     ]
     : [
-      { to: '/', label: 'Search', Icon: Search },
+      primaryLink,
       { to: isApprovedRole ? '/ledger' : '/apply', label: isApprovedRole ? 'Orders' : 'Access', Icon: ShoppingCart },
       { to: catalogTarget, label: 'Catalog', Icon: Users },
     ];
@@ -654,22 +858,34 @@ function MobileBottomNav({ role, isApprovedRole = false, onSearchPress = () => {
   return (
     <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-brand-navy/10 dark:border-white/10 bg-white/95 dark:bg-[#0a0a0f]/95 backdrop-blur pb-safe">
       <div className="px-2 py-2 grid grid-cols-3 gap-1">
-        {localizedLinks.map(({ to, label }) => (
-          <Link
-            key={`${to}-${label}`}
-            to={to}
-            onClick={(event) => {
-              if (to === '/') {
-                event.preventDefault();
-                onSearchPress();
-              }
-            }}
-            className={`min-h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-black uppercase tracking-wide transition-colors ${isLinkActive(to) ? 'text-brand-orange bg-brand-orange/10' : 'text-brand-navy/70 dark:text-gray-300 hover:text-brand-orange'}`}
-          >
-            {to === '/' ? <Search size={16} /> : (to.includes('fulfillment') || to === '/ledger') ? <ShoppingCart size={16} /> : <Users size={16} />}
-            <span>{label}</span>
-          </Link>
-        ))}
+        {localizedLinks.map((item) => {
+          if (item.kind === 'action') {
+            const ActionIcon = item.Icon || Search;
+            return (
+              <button
+                key={`action-${item.label}`}
+                type="button"
+                onClick={onPrimaryPress}
+                className={`min-h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-black uppercase tracking-wide transition-colors ${isLinkActive(item) ? 'text-brand-orange bg-brand-orange/10' : 'text-brand-navy/70 dark:text-gray-300 hover:text-brand-orange'}`}
+              >
+                <ActionIcon size={16} />
+                <span>{item.label}</span>
+              </button>
+            );
+          }
+
+          const LinkIcon = item.Icon || Users;
+          return (
+            <Link
+              key={`${item.to}-${item.label}`}
+              to={item.to}
+              className={`min-h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-black uppercase tracking-wide transition-colors ${isLinkActive(item) ? 'text-brand-orange bg-brand-orange/10' : 'text-brand-navy/70 dark:text-gray-300 hover:text-brand-orange'}`}
+            >
+              <LinkIcon size={16} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
@@ -851,6 +1067,7 @@ function AppLayout() {
     return pageVisibility?.[key] !== false;
   };
   const [isSearchPanelOpen, setIsSearchPanelOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.localStorage.getItem(SIDEBAR_COLLAPSE_STORAGE_KEY) === '1';
@@ -917,7 +1134,12 @@ function AppLayout() {
   const lightLogo = getAsset('WEBSITE_LIGHT_LOGO', '/light.png', 'light');
   const darkLogo = getAsset('WEBSITE_DARK_LOGO', '/dark.png', 'dark');
   const faviconUrl = getAsset('WEBSITE_FAVICON', '/favicon.png', 'favicon');
-  const handleBottomSearchPress = () => {
+  const handleBottomPrimaryPress = () => {
+    if (BETA_MODE) {
+      setIsMobileMenuOpen((prev) => !prev);
+      return;
+    }
+
     if (location.pathname === '/') {
       setIsSearchPanelOpen((prev) => !prev);
       return;
@@ -1013,6 +1235,22 @@ function AppLayout() {
     if (typeof window === 'undefined') return;
     window.localStorage.setItem(SIDEBAR_COLLAPSE_STORAGE_KEY, isSidebarCollapsed ? '1' : '0');
   }, [isSidebarCollapsed]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    if (!isMobileMenuOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     Promise.all([fetchSiteLayout(), fetchAssets()])
@@ -1148,6 +1386,20 @@ function AppLayout() {
             </button>
           )}
 
+          <MobileMenuDrawer
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+            navItemsList={localizedNavItemsList}
+            showNotice={showGuestWarning}
+            isAuthenticated={!!session}
+            session={session}
+            onPortalAccess={handleSidebarPortalAccess}
+            supportHref={supportHref}
+            supportExternal={!isPageEnabled('support_page')}
+            lightLogo={lightLogo}
+            darkLogo={darkLogo}
+          />
+
           <MobileTopNav lightLogo={lightLogo} darkLogo={darkLogo} />
 
           <main id="main-content" className="pb-20 lg:pb-0">
@@ -1247,7 +1499,13 @@ function AppLayout() {
             lightLogo={lightLogo}
             darkLogo={darkLogo}
           />
-          <MobileBottomNav role={role} isApprovedRole={isApprovedRole} onSearchPress={handleBottomSearchPress} isSearchPanelOpen={effectiveSearchPanelOpen} catalogTarget={catalogTarget} />
+          <MobileBottomNav
+            role={role}
+            isApprovedRole={isApprovedRole}
+            onPrimaryPress={handleBottomPrimaryPress}
+            isPrimaryPanelOpen={BETA_MODE ? isMobileMenuOpen : effectiveSearchPanelOpen}
+            catalogTarget={catalogTarget}
+          />
 
         </div>
       </div>

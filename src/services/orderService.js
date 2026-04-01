@@ -75,6 +75,9 @@ const OWNER_SETTINGS_DEFAULTS = {
 
 const normalizeText = (value) => (typeof value === 'string' ? value.trim() : '');
 const normalizeEmail = (value) => normalizeText(value).toLowerCase();
+const DEFAULT_CATALOG_SOURCE = normalizeText(
+  import.meta.env.VITE_CATALOG_SOURCE || (import.meta.env.VITE_BETA_MODE === 'true' ? 'BETA' : '')
+).toUpperCase();
 
 const createClientOrderId = () => {
   const now = new Date();
@@ -440,11 +443,13 @@ export const submitPreorderRequest = async ({
   productHandle,
   productTitle = '',
   requestedQty = 1,
+  catalogSource = DEFAULT_CATALOG_SOURCE,
 }) => {
   const email = normalizeEmail(memberEmail);
   const handle = normalizeText(productHandle).toLowerCase();
   const title = normalizeText(productTitle);
   const quantity = Math.max(1, Math.round(Number(requestedQty || 1)));
+  const normalizedCatalogSource = normalizeText(catalogSource).toUpperCase();
 
   if (!email) throw new Error('Member email is required.');
   if (!handle) throw new Error('Product handle is required.');
@@ -466,6 +471,7 @@ export const submitPreorderRequest = async ({
     product_handle: handle,
     product_title: title,
     requested_qty: quantity,
+    ...(normalizedCatalogSource ? { catalog_source: normalizedCatalogSource } : {}),
   });
 
   return appendLocalPreorder({

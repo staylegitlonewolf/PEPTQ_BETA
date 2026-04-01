@@ -16,6 +16,9 @@ const normalizeSlug  = (v) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+const DEFAULT_CATALOG_SOURCE = normalizeText(
+  import.meta.env.VITE_CATALOG_SOURCE || (import.meta.env.VITE_BETA_MODE === 'true' ? 'BETA' : '')
+).toUpperCase();
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 const loadAuthSession = () => {
@@ -51,9 +54,9 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
     try {
       const cached = window.sessionStorage.getItem(CATALOG_CACHE_KEY);
       if (cached) {
-        const { ts, data, cachedRole } = JSON.parse(cached);
+        const { ts, data, cachedRole, cachedCatalogSource } = JSON.parse(cached);
         const age = Date.now() - ts;
-        if (age < CATALOG_CACHE_TTL_MS && cachedRole === role) {
+        if (age < CATALOG_CACHE_TTL_MS && cachedRole === role && (cachedCatalogSource || '') === DEFAULT_CATALOG_SOURCE) {
           return Array.isArray(data) ? data : [];
         }
       }
@@ -61,6 +64,7 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
   }
 
   const params = new URLSearchParams({ command: 'GET_CATALOG', role });
+  if (DEFAULT_CATALOG_SOURCE) params.set('catalog_source', DEFAULT_CATALOG_SOURCE);
   const session = loadAuthSession();
   if (session?.email) params.set('actor_email', normalizeEmail(session.email));
 
@@ -77,7 +81,7 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
       try {
         window.sessionStorage.setItem(
           CATALOG_CACHE_KEY,
-          JSON.stringify({ ts: Date.now(), data: items, cachedRole: role })
+          JSON.stringify({ ts: Date.now(), data: items, cachedRole: role, cachedCatalogSource: DEFAULT_CATALOG_SOURCE })
         );
       } catch { /* sessionStorage full – skip */ }
     }
@@ -178,12 +182,14 @@ const buildCatalogDataset = async (role = 'GUEST') => {
   }
 
   // Owner local snapshot overlay (written by orderService during catalog updates)
-  const liveRows = getLocalOwnerCatalogSnapshot();
-  for (const row of (Array.isArray(liveRows) ? liveRows : [])) {
-    const key = normalizeSlug(row.handle || row.slug || row.id);
-    if (!key) continue;
-    const fallback = itemMap.get(key) || null;
-    itemMap.set(key, toStorefrontCatalogItem(row, fallback));
+  if (DEFAULT_CATALOG_SOURCE !== 'BETA') {
+    const liveRows = getLocalOwnerCatalogSnapshot();
+    for (const row of (Array.isArray(liveRows) ? liveRows : [])) {
+      const key = normalizeSlug(row.handle || row.slug || row.id);
+      if (!key) continue;
+      const fallback = itemMap.get(key) || null;
+      itemMap.set(key, toStorefrontCatalogItem(row, fallback));
+    }
   }
 
   return [...itemMap.values()]

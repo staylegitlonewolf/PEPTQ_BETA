@@ -164,16 +164,18 @@ function ComingSoonPage() {
 
             <div className="mt-4 flex items-center justify-center lg:hidden">
               <div className="relative inline-block">
-                <div className="pointer-events-none absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
-                  {text.heroRibbon}
-                </div>
                 <img
                   src={heroProductImage}
                   alt="PEPTQ hero product"
                   width="1024"
                   height="1024"
-                  className="relative z-0 mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
+                  className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
                 />
+              </div>
+            </div>
+            <div className="mt-3 flex justify-center lg:hidden">
+              <div className="inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
+                {text.heroRibbon}
               </div>
             </div>
 
@@ -275,16 +277,18 @@ function ComingSoonPage() {
 
           <div className="hidden items-center justify-center lg:flex">
             <div className="relative inline-block">
-              <div className="pointer-events-none absolute left-1/2 top-6 z-10 -translate-x-1/2 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
-                {text.heroRibbon}
-              </div>
               <img
                 src={heroProductImage}
                 alt="PEPTQ hero product"
                 width="1024"
                 height="1024"
-                className="relative z-0 mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
+                className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
               />
+            </div>
+          </div>
+          <div className="hidden justify-center lg:flex">
+            <div className="inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
+              {text.heroRibbon}
             </div>
           </div>
         </div>

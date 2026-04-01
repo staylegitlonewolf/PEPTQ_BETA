@@ -696,7 +696,7 @@ function MobileMenuDrawer({
                   : 'border-brand-orange/40 bg-brand-orange/10 text-brand-orange'
               }`}
             >
-              {'EspaÃ±ol'}
+              {'Español'}
             </button>
           </div>
         </div>

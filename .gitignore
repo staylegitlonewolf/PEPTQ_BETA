@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+BETA_WEBSITE_ONLY_FOLDER
 *.local
 .env
 .env.*

@@ -1,4 +1,5 @@
 import { APPS_SCRIPT_COMMAND_URL } from './api';
+import { toEmbeddableGoogleDriveUrl } from '../utils/driveLinks';
 import { buildSiteLayoutMap } from '../content/siteEditorConfig';
 
 const AUTH_STORAGE_KEY = 'peptq_auth_v1';
@@ -260,18 +261,24 @@ export const fetchAssets = async () => {
 
 export const getAssetUrl = (id, fallback = '') => {
   const key = normalizeText(id).toLowerCase();
-  if (!key) return fallback;
+  const normalizeAssetValue = (value) => {
+    const raw = typeof value === 'string' ? value.trim() : String(value || '').trim();
+    if (!raw) return '';
+    return toEmbeddableGoogleDriveUrl(raw) || raw;
+  };
+
+  if (!key) return normalizeAssetValue(fallback) || fallback;
 
   // 1) Prefer site layout entry when present (handles WEBSITE_LIGHT_LOGO etc).
   const fromLayout = getSiteLayoutValue(id, '');
-  if (fromLayout) return fromLayout;
+  if (fromLayout) return normalizeAssetValue(fromLayout) || fromLayout;
 
   // 2) Try cached asset registry (Asset sheet).
   const assets = getLocalAssets();
   const match = assets.find((asset) => asset.asset_id === key);
-  if (match?.url) return match.url;
+  if (match?.url) return normalizeAssetValue(match.url) || match.url;
 
-  return fallback;
+  return normalizeAssetValue(fallback) || fallback;
 };
 const normalizeSiteLayoutEntry = (entry = {}) => ({
   section_id: normalizeText(entry?.section_id || entry?.sectionId).toUpperCase(),

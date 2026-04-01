@@ -3,19 +3,6 @@ import { GOOGLE_SCRIPT_URL } from './api';
 const requiredFields = ['name', 'institution', 'email', 'phone', 'intent'];
 const GAS_SIMPLE_CONTENT_TYPE = 'text/plain;charset=utf-8';
 
-const sendGasBeacon = (url, payload) => {
-  if (typeof navigator === 'undefined' || typeof navigator.sendBeacon !== 'function') {
-    return false;
-  }
-
-  try {
-    const blob = new Blob([JSON.stringify(payload)], { type: GAS_SIMPLE_CONTENT_TYPE });
-    return navigator.sendBeacon(url, blob);
-  } catch {
-    return false;
-  }
-};
-
 const normalizeText = (value) => (typeof value === 'string' ? value.trim() : '');
 
 const formatNumeric = (value, digits = 3) => {
@@ -99,23 +86,55 @@ export const isPayloadSubmittable = (payload) => {
   return requiredFields.every((field) => normalizeText(payload?.[field]).length > 0);
 };
 
+const mapResearchInquiryToRequestCommand = (payload = {}) => ({
+  command: 'SUBMIT_REQUEST',
+  email: normalizeText(payload.email).toLowerCase(),
+  full_name: normalizeText(payload.name),
+  phone: normalizeText(payload.phone),
+  auth_provider: 'Google',
+  requested_role: 'MEMBER',
+  institution: normalizeText(payload.institution),
+  research_area: normalizeText(payload.intent),
+  scope_description: normalizeText(payload.message),
+  preferred_contact: normalizeText(payload.preferredContact) || 'Email',
+  product_interest: normalizeText(payload.productInterest),
+  manifest_calculations: normalizeText(payload.manifestCalculations),
+  product_images: Array.isArray(payload.productImages) ? payload.productImages : [],
+});
+
 export const submitResearchInquiry = async (payload) => {
   if (!isPayloadSubmittable(payload)) {
     throw new Error('Submission blocked: required fields are missing.');
   }
 
-  const queuedViaBeacon = sendGasBeacon(GOOGLE_SCRIPT_URL, payload);
-  if (queuedViaBeacon) {
-    return;
-  }
-
-  await fetch(GOOGLE_SCRIPT_URL, {
+  const response = await fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    mode: 'no-cors',
-    keepalive: true,
+    mode: 'cors',
     headers: {
       'Content-Type': GAS_SIMPLE_CONTENT_TYPE,
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(mapResearchInquiryToRequestCommand(payload)),
   });
+
+  let parsed = null;
+  try {
+    parsed = await response.json();
+  } catch {
+    parsed = null;
+  }
+
+  const responseCode = String(parsed?.code || '').toUpperCase();
+  const responseStatus = String(parsed?.status || '').toLowerCase();
+  const isSuccessfulResponse =
+    response.ok
+    && parsed
+    && (responseStatus === 'success' || responseCode.startsWith('SUCCESS_'));
+
+  if (!isSuccessfulResponse) {
+    const error = new Error(parsed?.message || 'Unable to submit research inquiry right now.');
+    error.code = parsed?.code || 'ERR_RESEARCH_INQUIRY_FAILED';
+    throw error;
+  }
+
+  return parsed;
 };

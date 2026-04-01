@@ -137,8 +137,8 @@ const ApplyPage = () => {
           agreed: false,
         });
       }, 2500);
-    } catch {
-      setSubmitError(text.submitError);
+    } catch (error) {
+      setSubmitError(error?.message || text.submitError);
       setIsSubmitting(false);
     }
   };

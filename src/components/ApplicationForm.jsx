@@ -64,8 +64,8 @@ const ApplicationForm = ({ isOpen, onClose }) => {
         clearManifest();
         setStep(1);
       }, 3000);
-    } catch {
-      setSubmitError('Verification server timeout. Please retry.');
+    } catch (error) {
+      setSubmitError(error?.message || 'Verification server timeout. Please retry.');
       setIsSubmitting(false);
     }
   };

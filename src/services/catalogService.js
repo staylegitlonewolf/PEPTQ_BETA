@@ -19,6 +19,8 @@ const normalizeSlug  = (v) =>
 const DEFAULT_CATALOG_SOURCE = normalizeText(
   import.meta.env.VITE_CATALOG_SOURCE || (import.meta.env.VITE_BETA_MODE === 'true' ? 'BETA' : '')
 ).toUpperCase();
+const ENABLE_CATALOG_CACHE =
+  import.meta.env.VITE_BETA_MODE !== 'true' && DEFAULT_CATALOG_SOURCE !== 'BETA';
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 const loadAuthSession = () => {
@@ -50,7 +52,7 @@ const loadSessionRole = () => {
  */
 const fetchBackendCatalog = async (role = 'GUEST') => {
   // Check cache first
-  if (typeof window !== 'undefined') {
+  if (ENABLE_CATALOG_CACHE && typeof window !== 'undefined') {
     try {
       const cached = window.sessionStorage.getItem(CATALOG_CACHE_KEY);
       if (cached) {
@@ -77,7 +79,7 @@ const fetchBackendCatalog = async (role = 'GUEST') => {
     const items = Array.isArray(payload?.items) ? payload.items : [];
 
     // Write to cache
-    if (typeof window !== 'undefined') {
+    if (ENABLE_CATALOG_CACHE && typeof window !== 'undefined') {
       try {
         window.sessionStorage.setItem(
           CATALOG_CACHE_KEY,

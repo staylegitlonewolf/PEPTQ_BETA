@@ -147,6 +147,25 @@ function PaymentPolicyPage() {
                     </ul>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div id="shipping-policy" className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5 scroll-mt-28">
+                    <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Envio' : 'Shipping Policy'}</h3>
+                    <ul className="space-y-2 text-sm text-brand-navy/75 dark:text-gray-300">
+                      <li>{es ? 'Envio disponible solo para cuentas institucionales aprobadas.' : 'Shipping is available only for approved institutional research accounts.'}</li>
+                      <li>{es ? 'Los tiempos de salida se confirman despues de la verificacion y el pago.' : 'Release timing is confirmed after verification and payment clearance.'}</li>
+                      <li>{es ? 'Consulta la pagina de Soporte si necesitas actualizaciones de entrega o documentos.' : 'Use the Support page for delivery updates or document requests.'}</li>
+                    </ul>
+                  </div>
+                  <div id="refund-policy" className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5 scroll-mt-28">
+                    <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Reembolso' : 'Refund Policy'}</h3>
+                    <ul className="space-y-2 text-sm text-brand-navy/75 dark:text-gray-300">
+                      <li>{es ? 'Materiales restringidos a uso de laboratorio; devoluciones pueden estar limitadas por cumplimiento y cadena de custodia.' : 'Materials are restricted to laboratory use; returns may be limited by compliance and chain-of-custody requirements.'}</li>
+                      <li>{es ? 'Si hay un problema con un pedido, envia una solicitud en Soporte para revision.' : 'If there is an issue with an order, submit a Support request for review.'}</li>
+                      <li>{es ? 'Las solicitudes de reemplazo o ajuste se manejan caso por caso.' : 'Replacement or adjustment requests are handled case-by-case.'}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

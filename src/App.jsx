@@ -948,9 +948,11 @@ function Disclaimer({
   showFloatingAccessibility = true,
 }) {
   const footerTermsLabel = localizeShellLabel('Terms & Conditions', language);
-  const footerPaymentLabel = localizeShellLabel('Payment Policy', language);
-  const footerAboutLabel = localizeShellLabel('About', language);
-  const footerSupportLabel = localizeShellLabel('Support', language);
+  const footerPrivacyLabel = language === 'es' ? 'Politica de Privacidad' : 'Privacy Policy';
+  const footerShippingLabel = language === 'es' ? 'Politica de Envio' : 'Shipping Policy';
+  const footerRefundLabel = language === 'es' ? 'Politica de Reembolso' : 'Refund Policy';
+  const footerPaymentLabel = language === 'es' ? 'Pago y Pedidos' : 'Payment & Ordering';
+  const footerSupportLabel = language === 'es' ? 'Contacto' : 'Contact';
 
   return (
     <>
@@ -978,9 +980,13 @@ function Disclaimer({
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-brand-navy/40 dark:text-white/40">
                 <Link to="/terms" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerTermsLabel}</Link>
                 <span>|</span>
-                <Link to="/payment-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPaymentLabel}</Link>
+                <Link to="/terms#privacy-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPrivacyLabel}</Link>
                 <span>|</span>
-                <Link to="/about" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerAboutLabel}</Link>
+                <Link to="/payment-policy#shipping-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerShippingLabel}</Link>
+                <span>|</span>
+                <Link to="/payment-policy#refund-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerRefundLabel}</Link>
+                <span>|</span>
+                <Link to="/payment-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPaymentLabel}</Link>
                 <span>|</span>
                 {supportExternal ? (
                   <a href={supportHref} className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerSupportLabel}</a>

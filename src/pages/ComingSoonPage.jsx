@@ -52,7 +52,7 @@ function ComingSoonPage() {
     subtitle: es
       ? 'Accede a compuestos de investigacion verificados a traves de nuestro registro validado por HPLC.'
       : 'Access verified research compounds through our HPLC-verified compound registry.',
-    heroRibbon: es ? 'Lista de espera abierta' : 'Waitlist open',
+    heroRibbon: es ? 'Proximamente' : 'Coming soon',
     fullName: es ? 'Nombre completo' : 'Full name',
     email: es ? 'Ingresa tu correo para unirte a la lista' : 'Enter email to join the waitlist',
     phone: es ? 'Numero de telefono' : 'Phone number',
@@ -154,8 +154,8 @@ function ComingSoonPage() {
         <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-8 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h4 className="mt-6 max-w-3xl text-4xl font-black leading-tight text-[#112e57] dark:text-white sm:text-6xl">
-              <span className="block">{text.titleLead}</span>
-              <span className="mt-1 inline-block whitespace-nowrap text-[#ff7a00]">{text.titleAccent}</span>
+              <span className="inline">{text.titleLead} </span>
+              <span className="inline whitespace-nowrap text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
 
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#28415f] dark:text-gray-300 sm:text-lg">

@@ -275,7 +275,7 @@ function ComingSoonPage() {
             </form>
           </div>
 
-          <div className="hidden items-center justify-center lg:flex">
+          <div className="hidden flex-col items-center justify-center lg:flex">
             <div className="relative inline-block">
               <img
                 src={heroProductImage}
@@ -285,9 +285,7 @@ function ComingSoonPage() {
                 className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
               />
             </div>
-          </div>
-          <div className="hidden justify-center lg:flex">
-            <div className="inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
+            <div className="mt-4 inline-flex rounded-full border border-white/20 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-lg">
               {text.heroRibbon}
             </div>
           </div>

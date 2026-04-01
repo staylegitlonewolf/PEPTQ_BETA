@@ -47,23 +47,23 @@ function ComingSoonPage() {
   const siteLayoutMap = buildSiteLayoutMap(siteLayoutEntries);
 
   const text = {
-    titleLead: es ? 'Unete a la lista de espera para' : 'Join the waitlist for',
-    titleAccent: es ? 'acceso temprano' : 'early access',
+    titleLead: es ? 'Unete a la' : 'Join the',
+    titleAccent: es ? 'lista de espera' : 'waitlist',
     subtitle: es
-      ? 'Accede a compuestos de investigacion verificados con acceso prioritario a nuestro registro validado por HPLC.'
-      : 'Access Verified Research Compounds for priority access to our HPLC-verified compound registry.',
-    batchTag: es ? 'Lote 001: Verificado y Listo para Investigacion.' : 'Batch 001: Verified & Ready for Research.',
+      ? 'Accede a compuestos de investigacion verificados a traves de nuestro registro validado por HPLC.'
+      : 'Access verified research compounds through our HPLC-verified compound registry.',
+    heroRibbon: es ? 'Lista de espera abierta' : 'Waitlist open',
     fullName: es ? 'Nombre completo' : 'Full name',
-    email: es ? 'Ingresa correo para acceso temprano' : 'Enter email for early access',
+    email: es ? 'Ingresa tu correo para unirte a la lista' : 'Enter email to join the waitlist',
     phone: es ? 'Numero de telefono' : 'Phone number',
     notes: es ? 'Notas (opcional)' : 'Notes (optional)',
-    termsLead: es ? 'Al solicitar acceso, aceptas nuestros' : 'By requesting access, you agree to our',
+    termsLead: es ? 'Al unirte a la lista, aceptas nuestros' : 'By joining the waitlist, you agree to our',
     terms: es ? 'Terminos y Condiciones' : 'Terms & Conditions',
     privacy: es ? 'Politica de Privacidad' : 'Privacy Policy',
     consent: es
       ? 'Confirmo que mi informacion es correcta y doy permiso a PEPTQ para notificarme sobre actualizaciones de acceso al lanzamiento.'
       : 'I confirm my information is accurate and I give PEPTQ permission to notify me about live launch access updates.',
-    submit: es ? 'Solicitar Acceso Temprano' : 'Request Early Access',
+    submit: es ? 'Unirme a la Lista' : 'Join Waitlist',
     submitting: es ? 'Enviando...' : 'Submitting...',
     aboutBtn: es ? 'Sobre la Lista de Espera' : 'About Waitlist',
     trustSignals: [
@@ -86,10 +86,10 @@ function ComingSoonPage() {
       : 'We will notify verified researchers first when access opens.',
     close: es ? 'Cerrar' : 'Close',
     aboutTag: es ? 'Sobre la Lista de Espera' : 'About The Waitlist',
-    aboutTitle: es ? 'Como Funciona el Acceso Temprano' : 'How Early Access Works',
+    aboutTitle: es ? 'Como Funciona la Lista de Espera' : 'How The Waitlist Works',
     aboutBody: es
-      ? 'La lista de espera reserva tu lugar para notificaciones de acceso. Los envios se revisan en orden y se prioriza el uso de investigacion verificado. Despues de envio y aprobacion, puedes acceder con tu correo o telefono aprobado y tu PIN del portal.'
-      : 'The waitlist reserves your place for launch access notifications. Submissions are reviewed in order and prioritized for verified research use. After submission and approval, you can access the portal using your approved email or phone number and your portal PIN.',
+      ? 'La lista de espera reserva tu lugar para notificaciones del lanzamiento. Los envios se revisan en orden y se prioriza el uso de investigacion verificado. Despues de la aprobacion, puedes acceder con tu correo o telefono y tu PIN del portal.'
+      : 'The waitlist reserves your place for launch notifications. Submissions are reviewed in order and prioritized for verified research use. After approval, you can access the portal using your email or phone and your portal PIN.',
     aboutNotice: es
       ? 'PEPTQ es un proveedor de productos quimicos y no es una farmacia de compuestos o instalacion de compuestos bajo la Seccion 503A de la FDA, y no es una instalacion de subcontratacion bajo la Seccion 503B. Materiales restringidos a uso de laboratorio.'
       : 'PEPTQ is a chemical supplier and is not a compounding pharmacy or chemical compounding facility under Section 503A of the Federal Food, Drug, and Cosmetic Act, and is not an outsourcing facility under Section 503B. All materials are restricted to qualified laboratory, research, and analytical use.',
@@ -163,18 +163,19 @@ function ComingSoonPage() {
             </p>
 
             <div className="mt-4 flex items-center justify-center lg:hidden">
-              <img
-                src={heroProductImage}
-                alt="PEPTQ hero product"
-                width="1024"
-                height="1024"
-                className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
-              />
+              <div className="relative inline-block">
+                <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
+                  {text.heroRibbon}
+                </div>
+                <img
+                  src={heroProductImage}
+                  alt="PEPTQ hero product"
+                  width="1024"
+                  height="1024"
+                  className="relative mx-auto h-72 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] sm:h-80"
+                />
+              </div>
             </div>
-
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.12em] text-[#ff7a00]">
-              {text.batchTag}
-            </p>
 
             <form className="mt-9 max-w-xl" onSubmit={handleJoinWaitlist}>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -269,31 +270,22 @@ function ComingSoonPage() {
               <p className="mt-3 text-[11px] font-semibold text-[#36506c]/85 dark:text-gray-300/90">
                 {text.secureNote}
               </p>
-              <div className="mt-6 text-center">
-                <p className="mx-auto max-w-lg text-center text-xs font-semibold text-[#36506c]/80 dark:text-gray-300/80">
-                  {text.footerNote}
-                </p>
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-xs text-[#36506c]/75 dark:text-gray-300/75">
-                  <Link to="/terms" className="transition hover:text-brand-orange">{text.terms}</Link>
-                  <span>|</span>
-                  <Link to="/terms#privacy-policy" className="transition hover:text-brand-orange">{text.privacy}</Link>
-                  <span>|</span>
-                  <Link to="/payment-policy" className="transition hover:text-brand-orange">{text.footerPayment}</Link>
-                  <span>|</span>
-                  <Link to="/about" className="transition hover:text-brand-orange">{text.footerAbout}</Link>
-                </div>
-              </div>
             </form>
           </div>
 
           <div className="hidden items-center justify-center lg:flex">
-            <img
-              src={heroProductImage}
-              alt="PEPTQ hero product"
-              width="1024"
-              height="1024"
-              className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
-            />
+            <div className="relative inline-block">
+              <div className="pointer-events-none absolute left-6 top-6 rounded-full border border-white/30 bg-[#ff7a00] px-4 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-white shadow-xl">
+                {text.heroRibbon}
+              </div>
+              <img
+                src={heroProductImage}
+                alt="PEPTQ hero product"
+                width="1024"
+                height="1024"
+                className="relative mx-auto h-88 w-auto object-contain drop-shadow-[0_26px_38px_rgba(0,0,0,0.35)] md:h-112 lg:h-136 xl:h-152"
+              />
+            </div>
           </div>
         </div>
       </div>

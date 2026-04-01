@@ -19,6 +19,7 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import DocumentsPage from './pages/DocumentsPage';
 import VerifyPage from './pages/VerifyPage';
+import CoaHubPage from './pages/CoaHubPage';
 import QuickAccessibilityPanel from './components/QuickAccessibilityPanel';
 import AppParticleBackground from './components/AppParticleBackground';
 import { fetchSiteLayout, fetchAssets, getLocalOwnerSettings, getAssetUrl, getSiteLayoutValue } from './services/orderService';
@@ -50,6 +51,7 @@ const navItems = [
 const betaNavItems = [
   { to: '/apply', label: 'Catalog' }, // Catalog goes straight to apply flow in beta
   { to: '/preorder', label: 'Pre-Order' },
+  { to: '/coa', label: 'COA' },
   { to: '/about', label: 'About' },
   { to: '/mission', label: 'Mission' },
   { to: '/payment-policy', label: 'Payment & Ordering' },
@@ -88,6 +90,7 @@ const SHELL_TRANSLATIONS = {
     'Support': 'Soporte',
     'Procurement Ledger': 'Registro de Compras',
     'My Documents': 'Mis Documentos',
+    'COA': 'COA',
     'Print Center': 'Centro de Impresion',
     'Catalog Manager': 'Gestor de Catalogo',
     'Owner': 'Propietario',
@@ -1129,9 +1132,10 @@ function AppLayout() {
   const requiresMasterGate = isStoreOn && isPrivilegedRole;
   const canAccessSensitiveTools = !requiresMasterGate || isMasterGateUnlocked;
   const isApprovedRole = ['MEMBER', 'VIP', 'OWNER', 'INSTITUTIONAL'].includes(role);
-  const showFooterNotice = location.pathname !== '/';
   const isMobile = useIsMobileViewport();
   const showComingSoonPage = comingSoonEnabled;
+  // Home intentionally hides the global footer; ComingSoon is rendered at `/` and should still show it.
+  const showFooterNotice = location.pathname !== '/' || showComingSoonPage;
   const supportHref = isPageEnabled('support_page')
     ? '/support'
     : `mailto:${ownerSettings?.support_email || 'support@peptq.com'}`;
@@ -1219,6 +1223,34 @@ function AppLayout() {
 
     robotsMeta.setAttribute('content', shouldNoIndex ? 'noindex, nofollow, noarchive' : 'index, follow');
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const path = String(location.pathname || '/');
+    const titleBase = 'PEPTQ';
+
+    const staticTitles = {
+      '/apply': 'Catalog Access',
+      '/preorder': 'Pre-Order',
+      '/coa': 'COA',
+      '/catalog': 'Catalog',
+      '/support': 'Support',
+      '/about': 'About',
+      '/mission': 'Mission',
+      '/payment-policy': 'Payment & Ordering',
+      '/terms': 'Terms',
+      '/owner': 'Operator',
+    };
+
+    let suffix = '';
+    if (path === '/' && showComingSoonPage) suffix = 'Waitlist';
+    else if (path.startsWith('/verify/')) suffix = 'Lot Verification';
+    else if (path.startsWith('/coa/')) suffix = 'COA';
+    else suffix = staticTitles[path] || (path === '/' ? 'Research Portal' : '');
+
+    document.title = suffix ? `${titleBase} | ${suffix}` : titleBase;
+  }, [location.pathname, showComingSoonPage]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -1529,6 +1561,8 @@ function AppLayout() {
                 </>
               )}
               <Route path="/verify/:lotId" element={<VerifyPage />} />
+              <Route path="/coa" element={<CoaHubPage />} />
+              <Route path="/coa/:lotId" element={<VerifyPage />} />
               {!BETA_MODE && (
                 <>
                   <Route path="/ow" element={<Navigate to="/owner" replace />} />

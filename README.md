@@ -3,7 +3,7 @@
 PEPTQ BETA is a public, no-login testing site used to validate the PEPTQ research portal experience before the stable release moves to `peptq.com`.
 
 This beta is focused on:
-- Confirming page layout, language switching (English/Español), and mobile usability
+- Confirming page layout, language switching (English/Espanol), and mobile usability
 - Validating the catalog and preorder workflow driven by Google Sheets
 - Validating form submissions and internal notification emails from Google Apps Script
 
@@ -11,7 +11,8 @@ This beta is focused on:
 
 - **Catalog**: Browse the current beta catalog list.
 - **Pre-Order**: Select SKUs and submit a preorder request for out-of-stock items.
-- **Early Access**: Join the waitlist for portal access.
+- **Waitlist**: Join the waitlist for portal access.
+- **COA**: Verify lot / COA metadata (research-grade verification).
 - **Apply**: Submit an institutional research account application.
 - **Support**: Send a support request (portal access / help / questions).
 - **About / Mission / Payment & Ordering / Terms**: Public policy + informational pages.
@@ -29,7 +30,7 @@ If an asset is missing or a link is incorrect, the site falls back to local `/pu
 ## Deployment
 
 This repo deploys to GitHub Pages using GitHub Actions.
-In the GitHub repo settings: set **Pages → Source** to **GitHub Actions**.
+In the GitHub repo settings: set **Pages -> Source** to **GitHub Actions**.
 
 ## Project Docs
 

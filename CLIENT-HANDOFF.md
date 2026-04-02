@@ -72,6 +72,7 @@ Added a Fullscreen toggle inside Accessibility Quick Settings:
 - Visible only when the device/browser supports the Fullscreen API (Android Chrome and similar).
 - Hidden on devices that cannot toggle fullscreen (notably iPhone/iOS).
 - Can toggle fullscreen ON and OFF from the same switch.
+- Does not change or disable other accessibility settings (contrast, reduced motion, font size) and is never auto-enabled; it only runs on explicit user tap.
 
 Location: Accessibility floating button (top-right) -> "Accessibility (Quick)" panel -> "Fullscreen" switch.
 
@@ -101,4 +102,3 @@ Latest commits on `main` include:
 These files may exist locally but were intentionally not included in the client update commits:
 - `README.md` (contains internal planning text)
 - `CLIENT_MESSAGE.MD` (local/untracked notes)
-

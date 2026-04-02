@@ -21,7 +21,9 @@ const canToggleFullscreen = () => {
   if (isIOSDevice()) return false;
 
   const root = document.documentElement;
-  return typeof root?.requestFullscreen === 'function'
+  const enabled = typeof document.fullscreenEnabled === 'boolean' ? document.fullscreenEnabled : true;
+  return enabled
+    && typeof root?.requestFullscreen === 'function'
     && typeof document.exitFullscreen === 'function';
 };
 

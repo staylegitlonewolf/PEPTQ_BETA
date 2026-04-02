@@ -2011,7 +2011,12 @@ export const createProformaInvoiceHtml = (order) => {
         <tbody>${itemRows || '<tr><td colspan="3" style="padding:6px;">No itemized rows available.</td></tr>'}</tbody>
       </table>
       <p style="margin-top:14px;"><strong>Total:</strong> $${total}</p>
-      <p style="margin-top:24px;font-size:12px;color:#4b5563;">Research Use Only. Institutional procurement artifact.</p>
+      <p style="margin-top:24px;font-size:12px;color:#4b5563;line-height:1.5;">
+        All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.
+      </p>
+      <p style="margin-top:10px;font-size:12px;color:#4b5563;line-height:1.5;">
+        By completing payment, you agree to PEPTQ's Terms & Conditions and confirm that all materials are being purchased for research use only.
+      </p>
     </body>
   </html>`;
 };

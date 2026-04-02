@@ -19,7 +19,12 @@ const FAQ = () => {
     {
       question: 'What payment methods do you accept?',
       answer:
-        'We accept institutional payments via ACH (Automated Clearing House) or Zelle. All transactions are invoice-based following institutional verification. We do not process credit card payments or consumer transaction portal payments.',
+        'Payments are processed via approved invoice methods (ACH or Zelle) following account verification and compliance approval.',
+    },
+    {
+      question: 'Do you support international orders?',
+      answer:
+        'International orders are reviewed on a case-by-case basis subject to regulatory compliance and logistics feasibility.',
     },
     {
       question: 'How long does the approval process take?',
@@ -29,7 +34,7 @@ const FAQ = () => {
     {
       question: 'Are these products for human consumption?',
       answer:
-        'No. All PEPTQ products are intended strictly for research and educational purposes only. They are not for human or veterinary use, and are not intended to diagnose, treat, cure, or prevent any disease.',
+        'No. All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease.',
     },
   ];
 

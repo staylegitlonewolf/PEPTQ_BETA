@@ -1,5 +1,5 @@
 import { FileCheck, ShieldAlert, Scale, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { getLocalSystemSettings } from '../services/orderService';
@@ -15,76 +15,130 @@ function TermsPage() {
   const isGuestOrPending = !role || ['GUEST', 'PENDING'].includes(role);
   const showRequestAccess = isGuestOrPending && isStoreOn;
 
+  const researchUseAgreementLine = 'By accessing this site or completing a purchase, you agree that all materials are for research use only and not for human or veterinary use.';
+  const researchUseDisclaimer = es
+    ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
+    : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.';
+
   const sections = es ? [
     {
-      title: 'Restricciones de Uso del Producto',
+      title: 'Acuerdo de Uso Solo en Investigacion',
       points: [
-        'Todos los productos estan destinados estrictamente a investigacion y educacion.',
+        'Todos los materiales PEPTQ estan destinados estrictamente a investigacion en laboratorio.',
         'Los productos no son para uso humano ni veterinario.',
-        'Los productos no estan destinados a aplicaciones terapeuticas, diagnosticas o clinicas.',
-        'Los materiales deben usarse solo en entornos institucionales de investigacion aprobados.',
+        'Al acceder al sitio o comprar, confirmas que el uso sera solo para investigacion y cumplimiento aplicable.',
       ],
     },
     {
-      title: 'Elegibilidad del Comprador',
+      title: 'Elegibilidad y Verificacion',
       points: [
-        'Los compradores deben tener 21 anios o mas.',
-        'Los compradores deben representar un entorno institucional de investigacion aprobado.',
-        'Todas las credenciales institucionales estan sujetas a verificacion y aprobacion.',
-        'PEPTQ se reserva el derecho de rechazar servicio a su discrecion.',
+        'El acceso esta limitado a cuentas institucionales de investigacion verificadas.',
+        'Las credenciales pueden requerir verificacion adicional.',
+        'PEPTQ se reserva el derecho de aprobar o rechazar solicitudes a su discrecion.',
       ],
     },
     {
-      title: 'Terminos de Pedido y Pago',
+      title: 'Pedidos y Terminos de Pago',
       points: [
-        'Todas las solicitudes estan sujetas a revision de credenciales institucionales y verificacion de cumplimiento.',
-        'El pago se acepta solo por metodos de factura aprobados (ACH y Zelle).',
-        'Todas las facturas se emiten despues de verificacion y aprobacion institucional.',
-        'Los terminos de pago estandar son Net 30 desde la fecha de factura.',
+        'Los pedidos se gestionan mediante procesos institucionales basados en factura.',
+        'Los metodos de pago aprobados incluyen ACH y Zelle.',
+        'Los pedidos se liberan solo despues de pago liquidado y confirmacion operativa.',
       ],
     },
     {
-      title: 'Responsabilidad y Deber',
+      title: 'Limitacion de Responsabilidad',
       points: [
-        'Los compradores son responsables de cumplir con todas las regulaciones federales, estatales y locales aplicables.',
-        'PEPTQ no asume responsabilidad por mal uso, manejo inadecuado o incumplimiento regulatorio del comprador.',
-        'Al enviar una solicitud, certificas que los materiales se usaran solo para fines de investigacion aprobados.',
+        'PEPTQ no asume responsabilidad por mal uso, manejo inadecuado o incumplimiento.',
+        'En la maxima medida permitida, la responsabilidad se limita segun estos terminos.',
+      ],
+    },
+    {
+      title: 'Indemnizacion',
+      points: [
+        'Aceptas indemnizar a PEPTQ por reclamos derivados de uso indebido o incumplimiento.',
+      ],
+    },
+    {
+      title: 'Responsabilidad de Cumplimiento',
+      points: [
+        'Eres responsable de cumplir con leyes y regulaciones aplicables.',
+        'Eres responsable de almacenamiento, manejo y uso seguro.',
+      ],
+    },
+    {
+      title: 'Comunicaciones y Uso de Datos',
+      points: [
+        'Los datos enviados por formularios se usan para verificacion, lista de espera y soporte.',
+        'PEPTQ no vende datos enviados por formularios.',
+        'Consulta la Politica de Privacidad para detalles.',
+      ],
+    },
+    {
+      title: 'Modificaciones a los Terminos',
+      points: [
+        'PEPTQ puede actualizar estos terminos periodicamente.',
+        'El uso continuo del sitio indica aceptacion de los terminos vigentes.',
       ],
     },
   ] : [
     {
-      title: 'Product Use Restrictions',
+      title: 'Research Use Only Agreement',
       points: [
-        'All products are intended strictly for research and educational purposes only.',
+        'All products are intended strictly for laboratory research purposes only.',
         'Products are not for human or veterinary use.',
-        'Products are not intended for therapeutic, diagnostic, or clinical applications.',
-        'Materials must be used only within approved institutional research environments.',
+        'You are responsible for ensuring all materials are used in compliance with applicable research regulations.',
+      ],
+      quote: researchUseAgreementLine,
+    },
+    {
+      title: 'Eligibility & Verification',
+      points: [
+        'Access is limited to verified institutional research accounts.',
+        'Institutional credentials are subject to compliance review and verification.',
+        'PEPTQ may approve or deny access at its discretion.',
       ],
     },
     {
-      title: 'Purchaser Eligibility',
+      title: 'Orders & Payment Terms',
       points: [
-        'Purchasers must be 21 years of age or older.',
-        'Purchasers must represent an approved institutional research environment.',
-        'All institutional credentials are subject to verification and approval.',
-        'PEPTQ reserves the right to refuse service at its discretion.',
+        'Orders are handled through an institutional, invoice-based process.',
+        'Approved payment methods include ACH and Zelle.',
+        'Orders are released only after cleared payment and operational confirmation.',
       ],
     },
     {
-      title: 'Order and Payment Terms',
+      title: 'Limitation of Liability',
       points: [
-        'All inquiries are subject to institutional credential review and compliance verification.',
-        'Payment is accepted via approved invoiced methods only (ACH and Zelle).',
-        'All invoices are issued following institutional verification and approval.',
-        'Standard payment terms are Net 30 from invoice date.',
-      ],
-    },
-    {
-      title: 'Liability and Responsibility',
-      points: [
-        'Purchasers are responsible for compliance with all applicable federal, state, and local regulations.',
         'PEPTQ assumes no liability for misuse, improper handling, or purchaser regulatory non-compliance.',
-        'By submitting an inquiry, you certify materials will be used only for approved research purposes.',
+        'To the maximum extent permitted, liability is limited as described in these terms.',
+      ],
+    },
+    {
+      title: 'Indemnification',
+      points: [
+        'You agree to indemnify and hold harmless PEPTQ for claims arising from misuse or non-compliance.',
+      ],
+    },
+    {
+      title: 'Compliance Responsibility',
+      points: [
+        'You are responsible for compliance with all applicable federal, state, and local laws and regulations.',
+        'You are responsible for safe storage, handling, and authorized use.',
+      ],
+    },
+    {
+      title: 'Communications & Data Use',
+      points: [
+        'Contact details submitted through PEPTQ forms are used for access verification, waitlist updates, and support.',
+        'PEPTQ does not sell submitted contact data.',
+        'See the Privacy Policy for details.',
+      ],
+    },
+    {
+      title: 'Modifications to Terms',
+      points: [
+        'PEPTQ may update these terms from time to time.',
+        'Continued use of the site indicates acceptance of the current terms.',
       ],
     },
   ];
@@ -97,7 +151,7 @@ function TermsPage() {
             <div className="xl:w-5/12 space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-montserrat font-black text-brand-navy dark:text-white uppercase tracking-tight leading-tight">
-                  {es ? 'Terminos' : 'Terms'} <span className="text-brand-orange block">{es ? 'Estructura' : 'Framework'}</span>
+                  {es ? 'Terminos y' : 'Terms'} <span className="text-brand-orange block">{es ? 'Condiciones' : '& Conditions'}</span>
                 </h1>
 
                 {showRequestAccess && (
@@ -149,8 +203,13 @@ function TermsPage() {
               <div className="space-y-7">
                 <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
                   <p className="text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
-                    {es ? 'Solo para Uso en Investigacion: todos los materiales PEPTQ se suministran exclusivamente para entornos de laboratorio e investigacion educativa.' : 'Research Use Only: all PEPTQ materials are supplied solely for laboratory and educational research environments.'}
+                    {researchUseDisclaimer}
                   </p>
+                  {!es && (
+                    <p className="mt-3 text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
+                      "{researchUseAgreementLine}"
+                    </p>
+                  )}
                 </div>
 
                 {sections.map((section, index) => (
@@ -158,28 +217,35 @@ function TermsPage() {
                     <h2 className="text-sm md:text-base font-black uppercase tracking-wider text-brand-navy dark:text-white mb-3">
                       {index + 1}. {section.title}
                     </h2>
-                    <ul className="space-y-2">
+                    {section.quote ? (
+                      <p className="mb-3 rounded-xl border border-brand-orange/30 bg-white/60 dark:bg-black/10 p-4 text-sm font-bold text-brand-navy/90 dark:text-gray-200">
+                        "{section.quote}"
+                      </p>
+                    ) : null}
+                    <ul className="list-disc pl-5 space-y-2">
                       {section.points.map((point) => (
-                        <li key={point} className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">• {point}</li>
+                        <li key={point} className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">{point}</li>
                       ))}
                     </ul>
                   </div>
                 ))}
 
-                <div id="privacy-policy" className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5 scroll-mt-24">
+                <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                   <h2 className="text-sm md:text-base font-black uppercase tracking-wider text-brand-navy dark:text-white mb-3">
-                    {es ? 'Privacidad y Comunicaciones' : 'Privacy and Communications'}
+                    {es ? 'Politica de Privacidad' : 'Privacy Policy'}
                   </h2>
-                  <ul className="space-y-2">
-                    <li className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">• {es ? 'Los datos de contacto enviados por formularios PEPTQ se usan solo para lista de espera, verificacion y comunicacion de lanzamiento.' : 'Contact details submitted through PEPTQ forms are used for waitlist, verification, and launch communication only.'}</li>
-                    <li className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">• {es ? 'Al optar por participar, aceptas recibir actualizaciones de cuenta y acceso por correo y telefono cuando corresponda.' : 'By opting in, you agree to receive account and launch-access updates by email and phone where permitted.'}</li>
-                    <li className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">• {es ? 'PEPTQ no vende datos enviados y mantiene salvaguardas administrativas, tecnicas y fisicas sobre los registros.' : 'PEPTQ does not sell submitted contact data and maintains administrative, technical, and physical safeguards over submitted records.'}</li>
-                  </ul>
+                  <p className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">
+                    {es ? 'Lee la politica completa en la pagina dedicada.' : 'Read the full policy on the dedicated page.'}{' '}
+                    <Link to="/privacy" className="font-bold text-brand-orange underline underline-offset-2">
+                      {es ? 'Abrir Politica de Privacidad' : 'Open Privacy Policy'}
+                    </Link>
+                    .
+                  </p>
                 </div>
 
                 <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-gray-50 dark:bg-black/20 p-5">
                   <p className="text-xs text-brand-navy/70 dark:text-gray-400">
-                    <strong>{es ? 'Ultima Actualizacion:' : 'Last Updated:'}</strong> {es ? 'Febrero 2026. PEPTQ puede actualizar estos terminos periodicamente. El uso continuo del portal indica aceptacion de los terminos vigentes.' : 'February 2026. PEPTQ may update these terms from time to time. Continued use of portal services indicates acceptance of current terms.'}
+                    <strong>{es ? 'Ultima Actualizacion:' : 'Last Updated:'}</strong> 2026-04-02.
                   </p>
                 </div>
               </div>

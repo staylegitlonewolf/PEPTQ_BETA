@@ -1,5 +1,5 @@
 import { Landmark, ReceiptText, Truck, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { getLocalSystemSettings } from '../services/orderService';
@@ -59,7 +59,7 @@ function PaymentPolicyPage() {
             <div className="xl:w-5/12 space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-montserrat font-black text-brand-navy dark:text-white uppercase tracking-tight leading-tight">
-                  {es ? 'Politica de' : 'Payment'} <span className="text-brand-orange block">{es ? 'Pago' : 'Policy'}</span>
+                  {es ? 'Pago y' : 'Payment &'} <span className="text-brand-orange block">{es ? 'Pedidos' : 'Ordering'}</span>
                 </h1>
 
                 {showRequestAccess && (
@@ -109,13 +109,20 @@ function PaymentPolicyPage() {
 
             <div className="xl:w-7/12 w-full bg-white dark:bg-white/5 border-2 border-brand-navy dark:border-white/10 rounded-3xl p-7 md:p-10 shadow-2xl">
               <div className="space-y-8">
-                <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
-                  <p className="text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
-                    {es
-                      ? 'PEPTQ opera con un modelo institucional basado en facturas; no se admiten tarjetas de credito ni portales de consumo.'
-                      : 'PEPTQ operates on an invoice-based institutional model; credit cards and consumer transaction portals are not supported.'}
-                  </p>
-                </div>
+                  <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
+                    <p className="text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
+                      {es
+                        ? 'PEPTQ opera con un modelo institucional basado en facturas; no se admiten tarjetas de credito ni portales de consumo.'
+                        : 'PEPTQ operates on an invoice-based institutional model; credit cards and consumer transaction portals are not supported.'}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
+                    <p className="text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
+                      {es
+                        ? 'Al completar el pago, aceptas los Terminos y Condiciones de PEPTQ y confirmas que todos los materiales se compran solo para uso de investigacion.'
+                        : "By completing payment, you agree to PEPTQ's Terms & Conditions and confirm that all materials are being purchased for research use only."}
+                    </p>
+                  </div>
 
                 <div>
                   <h2 className="text-xl md:text-2xl font-black uppercase tracking-widest text-brand-navy dark:text-white mb-4">{es ? 'Flujo de Aprobacion y Cumplimiento' : 'Approval and Fulfillment Flow'}</h2>
@@ -136,6 +143,10 @@ function PaymentPolicyPage() {
                       <li>{es ? 'Validez de factura: 30 dias desde emision' : 'Invoice validity: 30 days from issuance'}</li>
                       <li>{es ? 'Terminos estandar: Net 30' : 'Standard terms: Net 30'}</li>
                       <li>{es ? 'Cuenta al dia requerida para nuevas liberaciones' : 'Account standing required for new releases'}</li>
+                      <li>{es ? 'Todos los pagos son finales y no reversibles' : 'All payments are final and non-reversible'}</li>
+                      <li>{es ? 'No se permiten contracargos o reversiones' : 'No chargebacks or reversals'}</li>
+                      <li>{es ? 'Los pedidos se liberan solo despues de pago liquidado' : 'Orders are released only after cleared payment'}</li>
+                      <li>{es ? 'Pago incompleto puede cancelar la asignacion' : 'Incomplete payment may cancel allocation'}</li>
                     </ul>
                   </div>
                   <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
@@ -149,21 +160,25 @@ function PaymentPolicyPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div id="shipping-policy" className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5 scroll-mt-28">
+                  <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                     <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Envio' : 'Shipping Policy'}</h3>
-                    <ul className="space-y-2 text-sm text-brand-navy/75 dark:text-gray-300">
-                      <li>{es ? 'Envio disponible solo para cuentas institucionales aprobadas.' : 'Shipping is available only for approved institutional research accounts.'}</li>
-                      <li>{es ? 'Los tiempos de salida se confirman despues de la verificacion y el pago.' : 'Release timing is confirmed after verification and payment clearance.'}</li>
-                      <li>{es ? 'Consulta la pagina de Soporte si necesitas actualizaciones de entrega o documentos.' : 'Use the Support page for delivery updates or document requests.'}</li>
-                    </ul>
+                    <p className="text-sm text-brand-navy/70 dark:text-gray-400 leading-relaxed">
+                      {es ? 'Lee la politica completa de envio en su pagina dedicada.' : 'Read the full shipping policy on its dedicated page.'}{' '}
+                      <Link to="/shipping" className="font-bold text-brand-orange underline underline-offset-2">
+                        {es ? 'Abrir Envio' : 'Open Shipping'}
+                      </Link>
+                      .
+                    </p>
                   </div>
-                  <div id="refund-policy" className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5 scroll-mt-28">
+                  <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                     <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Reembolso' : 'Refund Policy'}</h3>
-                    <ul className="space-y-2 text-sm text-brand-navy/75 dark:text-gray-300">
-                      <li>{es ? 'Materiales restringidos a uso de laboratorio; devoluciones pueden estar limitadas por cumplimiento y cadena de custodia.' : 'Materials are restricted to laboratory use; returns may be limited by compliance and chain-of-custody requirements.'}</li>
-                      <li>{es ? 'Si hay un problema con un pedido, envia una solicitud en Soporte para revision.' : 'If there is an issue with an order, submit a Support request for review.'}</li>
-                      <li>{es ? 'Las solicitudes de reemplazo o ajuste se manejan caso por caso.' : 'Replacement or adjustment requests are handled case-by-case.'}</li>
-                    </ul>
+                    <p className="text-sm text-brand-navy/70 dark:text-gray-400 leading-relaxed">
+                      {es ? 'Lee la politica completa de reembolso en su pagina dedicada.' : 'Read the full refund policy on its dedicated page.'}{' '}
+                      <Link to="/refund" className="font-bold text-brand-orange underline underline-offset-2">
+                        {es ? 'Abrir Reembolso' : 'Open Refund'}
+                      </Link>
+                      .
+                    </p>
                   </div>
                 </div>
               </div>

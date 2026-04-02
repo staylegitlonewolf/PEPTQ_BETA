@@ -225,7 +225,7 @@ function ComingSoonPage() {
                   {text.terms}
                 </Link>
                 {' '}{es ? 'y' : 'and'}{' '}
-                <Link to="/terms#privacy-policy" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
+                <Link to="/privacy" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
                   {text.privacy}
                 </Link>
                 .

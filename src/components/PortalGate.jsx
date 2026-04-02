@@ -126,7 +126,7 @@ function PortalGate({ isOpen, onClose }) {
             Secure submission over HTTPS. By requesting access, you agree to our{' '}
             <Link to="/terms" className="underline underline-offset-2 decoration-[#ff7a00]/55 hover:text-brand-orange transition">Terms</Link>
             {' '}and{' '}
-            <Link to="/terms#privacy-policy" className="underline underline-offset-2 decoration-[#ff7a00]/55 hover:text-brand-orange transition">Privacy Policy</Link>.
+            <Link to="/privacy" className="underline underline-offset-2 decoration-[#ff7a00]/55 hover:text-brand-orange transition">Privacy Policy</Link>.
           </p>
         </form>
       </div>

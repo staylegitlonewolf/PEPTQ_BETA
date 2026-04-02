@@ -13,6 +13,10 @@ import AboutPage from './pages/AboutPage';
 import MissionPage from './pages/MissionPage';
 import TermsPage from './pages/TermsPage';
 import PaymentPolicyPage from './pages/PaymentPolicyPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ShippingPolicyPage from './pages/ShippingPolicyPage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
+import ContactPage from './pages/ContactPage';
 import PreorderPage from './pages/PreorderPage';
 import OwnerPage from './pages/OwnerPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
@@ -539,26 +543,19 @@ function Sidebar({
               Notice
             </p>
             <p className="text-[11px] leading-relaxed text-brand-navy/75 dark:text-gray-300 font-semibold">
-              For Research and Educational Purposes Only.
+              {language === 'es' ? 'Aviso de Uso Solo en Investigacion.' : 'Research Use Only Disclaimer.'}
             </p>
             <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
-              Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. Statements on this site have not been evaluated by the U.S. Food and Drug Administration.
+              {language === 'es'
+                ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
+                : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.'}
             </p>
-            {supportExternal ? (
-              <a
-                href={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </a>
-            ) : (
-              <Link
-                to={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </Link>
-            )}
+            <Link
+              to="/contact"
+              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+            >
+              {language === 'es' ? 'Contacto' : 'Contact'}
+            </Link>
             {!isAuthenticated && !BETA_MODE && (
               <button
                 type="button"
@@ -734,27 +731,20 @@ function MobileMenuDrawer({
               Notice
             </p>
             <p className="text-[11px] leading-relaxed text-brand-navy/75 dark:text-gray-300 font-semibold">
-              For Research and Educational Purposes Only.
+              {language === 'es' ? 'Aviso de Uso Solo en Investigacion.' : 'Research Use Only Disclaimer.'}
             </p>
             <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
-              Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. Statements on this site have not been evaluated by the U.S. Food and Drug Administration.
+              {language === 'es'
+                ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
+                : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.'}
             </p>
-            {supportExternal ? (
-              <a
-                href={supportHref}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </a>
-            ) : (
-              <Link
-                to={supportHref}
-                onClick={onClose}
-                className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
-              >
-                Contact Us
-              </Link>
-            )}
+            <Link
+              to="/contact"
+              onClick={onClose}
+              className="mt-3 inline-block text-xs font-bold text-brand-navy/70 dark:text-gray-300 underline underline-offset-2 hover:text-brand-orange"
+            >
+              {language === 'es' ? 'Contacto' : 'Contact'}
+            </Link>
             {!isAuthenticated && !BETA_MODE && (
               <button
                 type="button"
@@ -953,6 +943,9 @@ function Disclaimer({
   const footerRefundLabel = language === 'es' ? 'Politica de Reembolso' : 'Refund Policy';
   const footerPaymentLabel = language === 'es' ? 'Pago y Pedidos' : 'Payment & Ordering';
   const footerSupportLabel = language === 'es' ? 'Contacto' : 'Contact';
+  const researchUseDisclaimer = language === 'es'
+    ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
+    : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.';
 
   return (
     <>
@@ -962,9 +955,9 @@ function Disclaimer({
             {showNotice && isMobile && (
               <div className="rounded-peptrx border border-brand-navy/10 dark:border-white/10 bg-white dark:bg-white/5 px-6 py-5 text-center mb-8 transition-colors duration-300">
                 <p className="text-xs leading-relaxed text-brand-navy/80 dark:text-white/80 font-medium max-w-4xl mx-auto mb-4">
-                  <strong className="text-brand-navy dark:text-white">For Research and Educational Purposes Only.</strong>
+                  <strong className="text-brand-navy dark:text-white">{language === 'es' ? 'Aviso de Uso Solo en Investigacion.' : 'Research Use Only Disclaimer.'}</strong>
                   <br />
-                  Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. Statements on this site have not been evaluated by the U.S. Food and Drug Administration.
+                  {researchUseDisclaimer}
                 </p>
               </div>
             )}
@@ -974,25 +967,26 @@ function Disclaimer({
                 <img src={darkLogo} alt="PEPTQ" className="hidden h-8 w-auto dark:block" />
               </div>
               <p className="font-montserrat font-bold mb-2">PEPTQ Research Portal</p>
+              <p className="text-brand-navy/60 dark:text-white/60 text-xs leading-relaxed max-w-4xl mx-auto mb-4">
+                {researchUseDisclaimer}
+              </p>
               <p className="text-brand-navy/60 dark:text-white/60 text-sm mb-4">
-                Copyright 2026 PEPTQ. All rights reserved. | For research and educational purposes only.
+                {language === 'es'
+                  ? 'Copyright 2026 PEPTQ. Todos los derechos reservados.'
+                  : 'Copyright 2026 PEPTQ. All rights reserved.'}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-brand-navy/40 dark:text-white/40">
                 <Link to="/terms" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerTermsLabel}</Link>
                 <span>|</span>
-                <Link to="/terms#privacy-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPrivacyLabel}</Link>
+                <Link to="/privacy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPrivacyLabel}</Link>
                 <span>|</span>
-                <Link to="/payment-policy#shipping-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerShippingLabel}</Link>
+                <Link to="/shipping" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerShippingLabel}</Link>
                 <span>|</span>
-                <Link to="/payment-policy#refund-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerRefundLabel}</Link>
+                <Link to="/refund" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerRefundLabel}</Link>
                 <span>|</span>
                 <Link to="/payment-policy" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerPaymentLabel}</Link>
                 <span>|</span>
-                {supportExternal ? (
-                  <a href={supportHref} className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerSupportLabel}</a>
-                ) : (
-                  <Link to={supportHref} className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerSupportLabel}</Link>
-                )}
+                <Link to="/contact" className="hover:text-brand-orange dark:hover:text-brand-orange transition">{footerSupportLabel}</Link>
               </div>
             </div>
           </div>
@@ -1535,6 +1529,10 @@ function AppLayout() {
               <Route path="/support" element={isPageEnabled('support_page') ? <SupportPage /> : <Navigate to="/" replace />} />
               <Route path="/about" element={isPageEnabled('about_page') ? <AboutPage /> : <Navigate to="/" replace />} />
               <Route path="/mission" element={isPageEnabled('mission_page') ? <MissionPage /> : <Navigate to="/" replace />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/shipping" element={<ShippingPolicyPage />} />
+              <Route path="/refund" element={<RefundPolicyPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/terms" element={isPageEnabled('terms_page') ? <TermsPage /> : <Navigate to="/" replace />} />
               <Route path="/payment-policy" element={isPageEnabled('payment_policy_page') ? <PaymentPolicyPage /> : <Navigate to="/" replace />} />
               {!BETA_MODE && (

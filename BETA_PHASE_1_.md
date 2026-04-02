@@ -1,50 +1,53 @@
-PEPTQ BETA PHASE 1 – IMPLEMENTATION NOTES (READ CAREFULLY)
+# PEPTQ Beta Phase 1 - Client Summary
 
-STARTING POINT
-- Codebase root: C:\Users\Lonewolf\Desktop\PEPTQ DEMO
-- Beta build output: C:\Users\Lonewolf\Desktop\PEPTQ DEMO\BETA_VERSION\BETA_WEBSITE_ONLY_FOLDER
+Updated: 2026-04-02 (America/New_York)
 
-IN-SCOPE PAGES (KEEP)
-- Catalog → routes to /apply (no guest entry)
-- Pre-Order (simple preorder intake) → /preorder
-- Access/Apply form → /apply
-- Support → /support
-- About → /about
-- Mission → /mission
-- Payment & Ordering → /payment-policy
-- Terms → /terms
-- Notice, light/dark theme toggle, accessibility, language assist, support notes
+## Scope (Phase 1)
 
-EXCLUDED (REMOVE/REDIRECT)
-- Owner page, Member page
-- Login / profile pages
-- Enter as Guest
-- Any /owner, /ledger, /documents, /profile routes (redirect away in beta)
+Phase 1 is focused on a beta-ready public experience with institutional positioning, streamlined routing, and verified submission flows into the operations backend (Google Apps Script + Google Sheets).
 
-WORKFLOW REQUIREMENTS
-- Sidebar/nav: no Login/Profile; Catalog item points to /apply; include Pre-Order tab.
-- Forms must submit to Google Apps Script + Sheets:
-  - Waitlist intake
-  - Research Account Application (Apply)
-  - Pre-Order (new simple intake)
-- Email automation: use testing inbox `lvastudio.ops@gmail.com`.
-- Add small pin text bottom-left: “YOU ARE A BETA TESTER”.
+## In-Scope Pages (Delivered)
 
-GOOGLE APPS SCRIPT / SHEETS
-- Existing endpoints: Waitlist, Research Account, Preorder (SUBMIT_PREORDER) stay wired; ensure submissions land in Sheets without auth friction.
+- Catalog access flow: `/apply`
+- Pre-Order intake: `/preorder`
+- Support intake: `/support`
+- About: `/about`
+- Mission: `/mission`
+- Payment & Ordering: `/payment-policy`
+- Terms & Conditions: `/terms`
+- Accessibility quick settings (contrast, reduced motion, font sizing, dyslexia-friendly font) and language assist
 
-DELIVERABLES
-- Beta build (vite build --mode beta) copied into BETA_VERSION/BETA_WEBSITE_ONLY_FOLDER.
-- Navigation/route surface matches the above.
-- Visual indicator “YOU ARE A BETA TESTER” present.
+## Out of Scope for Beta (Hidden or Redirected)
 
-DONE
-- Beta nav/route trims owner/member/login; Catalog→/apply; profile/owner routes redirected; guest entry removed.
-- Beta badge added (sidebar + mobile).
+These are intentionally excluded from Beta Phase 1:
+- Owner/admin operations
+- Member profile and internal account pages
+- Guest entry mode
+- Internal routes like `/owner`, `/ledger`, `/documents`, `/profile` are redirected away in beta mode
 
-TODO (today)
-- Build beta bundle and place in BETA_WEBSITE_ONLY_FOLDER.
-- Smoke-test /apply, /preorder, /support forms for Sheet delivery.
+## Forms and Backend Delivery
 
-QUESTION FROM PM
-- New “Pre-Order” tab: provide simple preorder catalog view; current implementation is a lightweight preorder form posting to SUBMIT_PREORDER.
+Phase 1 includes working submission paths to the backend system:
+- Waitlist intake
+- Research account application (Apply)
+- Pre-Order intake
+
+All submissions are designed to land in the connected Google Sheets without requiring extra user authentication steps.
+
+## Deliverables
+
+- Route/navigation surface matches the intended beta scope above
+- Submission flows operational (forms deliver data to Sheets)
+- Beta tester indicator is present in the UI where applicable
+
+## Verification Checklist
+
+1. Confirm each route loads: `/apply`, `/preorder`, `/support`, `/about`, `/mission`, `/payment-policy`, `/terms`
+2. Submit each form once and confirm entries appear in the correct sheet tabs
+3. Confirm internal-only routes are not accessible in beta (they should redirect)
+4. Confirm the beta UI indicator is visible where expected
+
+## Open Item / Clarification
+
+Pre-Order is currently implemented as a lightweight intake form posting to the backend preorder endpoint. If the next phase requires a full preorder catalog browsing experience (beyond intake), that would be scoped as a separate enhancement.
+

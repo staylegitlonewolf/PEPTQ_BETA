@@ -1,8 +1,29 @@
-import { Contrast, Type, MoveHorizontal } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Contrast, Type, MoveHorizontal, Maximize2 } from 'lucide-react';
 import { useAccessibility } from '../context/AccessibilityContext';
 
 const rowClass = 'rounded-2xl border border-brand-navy/10 dark:border-white/10 bg-white dark:bg-black/15 p-4 mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3';
 const buttonGroupClass = 'flex flex-col gap-2 rounded-xl border border-brand-navy/15 dark:border-white/15 bg-white/80 dark:bg-white/5 p-1 w-full sm:w-auto';
+
+const isIOSDevice = () => {
+  if (typeof navigator === 'undefined') return false;
+  const ua = String(navigator.userAgent || '');
+  const platform = String(navigator.platform || '');
+  const maxTouchPoints = Number(navigator.maxTouchPoints || 0);
+
+  // iPadOS can identify as MacIntel while still being a touch device.
+  if (platform === 'MacIntel' && maxTouchPoints > 1) return true;
+  return /iPad|iPhone|iPod/i.test(ua);
+};
+
+const canToggleFullscreen = () => {
+  if (typeof document === 'undefined') return false;
+  if (isIOSDevice()) return false;
+
+  const root = document.documentElement;
+  return typeof root?.requestFullscreen === 'function'
+    && typeof document.exitFullscreen === 'function';
+};
 
 const ToggleRow = ({ icon, title, description, enabled, onToggle }) => {
   const IconComponent = icon;
@@ -86,8 +107,49 @@ function QuickAccessibilityPanel() {
     setDyslexiaFont,
   } = useAccessibility();
 
+  const fullscreenSupported = useMemo(() => canToggleFullscreen(), []);
+  const [isFullscreen, setIsFullscreen] = useState(() => {
+    if (typeof document === 'undefined') return false;
+    return Boolean(document.fullscreenElement);
+  });
+
+  useEffect(() => {
+    if (!fullscreenSupported || typeof document === 'undefined') return undefined;
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, [fullscreenSupported]);
+
+  const toggleFullscreen = async () => {
+    if (!fullscreenSupported || typeof document === 'undefined') return;
+
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+        return;
+      }
+
+      await document.documentElement.requestFullscreen();
+    } catch (error) {
+      console.warn('FULLSCREEN_TOGGLE_FAILED', String(error));
+    }
+  };
+
   return (
     <div>
+      {fullscreenSupported && (
+        <ToggleRow
+          icon={Maximize2}
+          title="Fullscreen"
+          description="Toggle immersive fullscreen (supported Android browsers only)."
+          enabled={isFullscreen}
+          onToggle={toggleFullscreen}
+        />
+      )}
       <ToggleRow
         icon={Contrast}
         title="High Contrast"

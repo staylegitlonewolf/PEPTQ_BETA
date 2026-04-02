@@ -10,6 +10,8 @@ All requested updates from the client revision document have been fully implemen
 - Footer restructuring
 - Required compliance language additions
 - FAQ and payment wording updates
+- Navigation label alignment (VERIFY | MENU | ACCESS | CATALOG)
+- Disclaimer consolidation (full disclaimer in footer only)
 - Accessibility enhancement (Fullscreen toggle on supported Android devices)
 
 The site is now aligned with the requested structure and ready for client review.
@@ -37,6 +39,7 @@ Also ensured the Research Use Only disclaimer remains prominent in/near the foot
 - the required section structure (Research Use Only Agreement, Eligibility, Orders & Payment Terms, Liability, Indemnification, Compliance Responsibility, Communications & Data Use, Modifications)
 - the exact required line:
   "By accessing this site or completing a purchase, you agree that all materials are for research use only and not for human or veterinary use."
+  - This line is shown once at the top of the page (duplicates removed).
 
 ### Privacy / Shipping / Refund / Contact Pages (Created)
 New routes/pages were added (designed to match the existing institutional tone of the site):
@@ -55,15 +58,11 @@ New routes/pages were added (designed to match the existing institutional tone o
 Also added the required Payment Confirmation line:
 "By completing payment, you agree to PEPTQ's Terms & Conditions and confirm that all materials are being purchased for research use only."
 
-### Disclaimer (Replaced With Client Text + Placed In Required Areas)
-Updated disclaimer to the required text:
-"All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations."
+### Disclaimer Consolidation (Launch Polish)
+To reduce redundancy, the full disclaimer is now shown in the footer only.
 
-Placed in:
-- Footer
-- Terms page
-- Access/application flow messaging
-- Invoice/payment communication (Pro-forma invoice HTML)
+All other locations use the short version:
+"All materials are intended for laboratory research use only."
 
 ### Application Form Note (Added)
 Added the required note:
@@ -75,6 +74,21 @@ Updated the PDF-specified FAQ wording, including:
 - International orders line: "International orders are reviewed on a case-by-case basis subject to regulatory compliance and logistics feasibility."
 
 Important: if FAQs are overridden via Owner settings, we also normalize/guard these two lines so the PDF language stays correct.
+
+### Navigation Label (Launch Polish)
+Beta bottom navigation label updated from BETA -> VERIFY so the beta nav reads:
+VERIFY | MENU | ACCESS | CATALOG
+
+### Shipping/Refund Link Text (Launch Polish)
+Updated link wording:
+- "Open Shipping" -> "View Shipping Policy"
+- "Open Refund" -> "View Refund Policy"
+
+### Access Page Email Field (Launch Polish)
+Apply page email placeholder updated to:
+"you@institution.edu or verified business email"
+
+And the form blocks common free email domains to encourage institutional/business emails.
 
 ## Accessibility Update (New Request From Daniel)
 
@@ -89,14 +103,15 @@ Location: Accessibility floating button (top-right) -> "Accessibility (Quick)" p
 ## Verification Steps (Quick)
 
 1. Open the live site.
-2. Scroll to footer and confirm the exact link list and the disclaimer text.
-3. Open each policy page:
-   - `/terms`, `/privacy`, `/shipping`, `/refund`, `/payment-policy`, `/contact`
-4. Confirm Terms contains the exact required line.
-5. Confirm Payment & Ordering contains the payment confirmation line.
-6. Android: open Accessibility panel and verify Fullscreen toggle appears and works.
-7. iPhone: verify Fullscreen toggle does not appear.
-8. Confirm no restricted or non-compliant language appears across product, FAQ, or policy pages.
+2. Confirm bottom nav shows: VERIFY | MENU | ACCESS | CATALOG
+3. Scroll to footer and confirm the exact link list and the full disclaimer text.
+4. Confirm other pages show only the short disclaimer line (not the full paragraph).
+5. Open each policy page: `/terms`, `/privacy`, `/shipping`, `/refund`, `/payment-policy`, `/contact`
+6. Confirm Terms contains the exact required line (shown once at the top).
+7. Confirm Payment & Ordering contains the payment confirmation line.
+8. Android: open Accessibility panel and verify Fullscreen toggle appears and works.
+9. iPhone: verify Fullscreen toggle does not appear.
+10. Confirm no restricted or non-compliant language appears across product, FAQ, or policy pages.
 
 ## Deploy Notes
 

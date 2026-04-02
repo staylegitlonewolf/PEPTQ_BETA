@@ -163,22 +163,22 @@ function PaymentPolicyPage() {
                   <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                     <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Envio' : 'Shipping Policy'}</h3>
                     <p className="text-sm text-brand-navy/70 dark:text-gray-400 leading-relaxed">
-                      {es ? 'Lee la politica completa de envio en su pagina dedicada.' : 'Read the full shipping policy on its dedicated page.'}{' '}
-                      <Link to="/shipping" className="font-bold text-brand-orange underline underline-offset-2">
-                        {es ? 'Abrir Envio' : 'Open Shipping'}
-                      </Link>
-                      .
-                    </p>
+                       {es ? 'Lee la politica completa de envio en su pagina dedicada.' : 'Read the full shipping policy on its dedicated page.'}{' '}
+                       <Link to="/shipping" className="font-bold text-brand-orange underline underline-offset-2">
+                        {es ? 'Ver Politica de Envio' : 'View Shipping Policy'}
+                       </Link>
+                       .
+                     </p>
                   </div>
                   <div className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                     <h3 className="text-sm font-black uppercase tracking-wide text-brand-navy dark:text-white mb-3">{es ? 'Politica de Reembolso' : 'Refund Policy'}</h3>
                     <p className="text-sm text-brand-navy/70 dark:text-gray-400 leading-relaxed">
-                      {es ? 'Lee la politica completa de reembolso en su pagina dedicada.' : 'Read the full refund policy on its dedicated page.'}{' '}
-                      <Link to="/refund" className="font-bold text-brand-orange underline underline-offset-2">
-                        {es ? 'Abrir Reembolso' : 'Open Refund'}
-                      </Link>
-                      .
-                    </p>
+                       {es ? 'Lee la politica completa de reembolso en su pagina dedicada.' : 'Read the full refund policy on its dedicated page.'}{' '}
+                       <Link to="/refund" className="font-bold text-brand-orange underline underline-offset-2">
+                        {es ? 'Ver Politica de Reembolso' : 'View Refund Policy'}
+                       </Link>
+                       .
+                     </p>
                   </div>
                 </div>
               </div>

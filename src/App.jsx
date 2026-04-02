@@ -77,6 +77,7 @@ const SHELL_TRANSLATIONS = {
   es: {
     'Catalog': 'Catalogo',
     'Beta': 'Beta',
+    'Verify': 'Verificar',
     'Search': 'Buscar',
     'Menu': 'Menu',
     'About': 'Acerca de',
@@ -455,7 +456,7 @@ function Sidebar({
         {BETA_MODE && (
           <div className="mb-6">
             <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
-              BETA
+              VERIFY
             </div>
           </div>
         )}
@@ -547,8 +548,8 @@ function Sidebar({
             </p>
             <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
               {language === 'es'
-                ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
-                : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.'}
+                ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                : 'All materials are intended for laboratory research use only.'}
             </p>
             <Link
               to="/contact"
@@ -668,7 +669,7 @@ function MobileMenuDrawer({
         {BETA_MODE && (
           <div className="mb-6">
             <div className="h-11 w-11 inline-flex items-center justify-center rounded-full border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-white/5 text-[10px] font-black text-brand-orange">
-              BETA
+              VERIFY
             </div>
           </div>
         )}
@@ -735,8 +736,8 @@ function MobileMenuDrawer({
             </p>
             <p className="text-[10px] leading-relaxed text-brand-navy/60 dark:text-gray-400 mt-1">
               {language === 'es'
-                ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
-                : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.'}
+                ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                : 'All materials are intended for laboratory research use only.'}
             </p>
             <Link
               to="/contact"
@@ -856,13 +857,19 @@ function MobileBottomNav({ role, isApprovedRole = false, onPrimaryPress = () => 
       return location.pathname === '/owner' && currentTab === tab;
     }
 
+    if (to === '/coa') {
+      return location.pathname === '/coa'
+        || location.pathname.startsWith('/coa/')
+        || location.pathname.startsWith('/verify/');
+    }
+
     return location.pathname === to;
   };
 
   const primaryLink = BETA_MODE
     ? { kind: 'action', label: 'Menu', Icon: Menu }
     : { kind: 'action', label: 'Search', Icon: Search };
-  const betaHomeLink = { to: '/', label: 'Beta', Icon: ShieldCheck };
+  const betaHomeLink = { to: '/coa', label: 'Verify', Icon: ShieldCheck };
 
   const links = BETA_MODE
     ? [

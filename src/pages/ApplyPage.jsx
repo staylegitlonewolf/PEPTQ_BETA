@@ -67,7 +67,7 @@ const ApplyPage = () => {
     placeholders: {
       institution: es ? 'Institucion' : 'Institution',
       fullName: es ? 'Nombre completo' : 'Full Name',
-      email: es ? 'tu@institucion.edu' : 'you@institution.edu',
+      email: es ? 'tu@institucion.edu o correo comercial verificado' : 'you@institution.edu or verified business email',
       phone: '+1 (555) 000-0000',
       specialty: es ? 'Selecciona una especialidad' : 'Select a specialty',
       scope: es ? 'Compuestos especificos y uso esperado...' : 'Specific compounds and expected usage...',
@@ -114,6 +114,38 @@ const ApplyPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
+
+    const rawEmail = String(formData.email || '').trim();
+    const normalizedEmail = rawEmail.toLowerCase();
+    const emailParts = normalizedEmail.split('@');
+    const domain = emailParts.length === 2 ? String(emailParts[1] || '').trim() : '';
+    const freeDomains = new Set([
+      'gmail.com',
+      'googlemail.com',
+      'yahoo.com',
+      'outlook.com',
+      'hotmail.com',
+      'live.com',
+      'msn.com',
+      'icloud.com',
+      'aol.com',
+      'proton.me',
+      'protonmail.com',
+      'gmx.com',
+      'pm.me',
+    ]);
+
+    const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
+    const allowedInstitutionOrBusinessEmail = looksLikeEmail
+      && Boolean(domain)
+      && (domain.endsWith('.edu') || !freeDomains.has(domain));
+
+    if (!allowedInstitutionOrBusinessEmail) {
+      setSubmitError(es
+        ? 'Usa un correo institucional (.edu) o un correo comercial verificado (no dominios gratuitos).'
+        : 'Use an institutional (.edu) or verified business email (no free email domains).');
+      return;
+    }
 
     const payload = buildSubmissionPayload({ formData, manifestItems, toAbsoluteImageUrl });
     setSubmitError('');
@@ -284,8 +316,8 @@ const ApplyPage = () => {
                       </p>
                       <p className="text-center text-[11px] font-semibold text-brand-navy/60 dark:text-gray-400 leading-relaxed">
                         {es
-                          ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
-                          : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.'}
+                          ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+                          : 'All materials are intended for laboratory research use only.'}
                       </p>
                       {!BETA_MODE && (
                         <div className="text-center">

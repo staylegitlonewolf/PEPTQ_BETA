@@ -18,6 +18,11 @@ const FAQ = () => {
       return 'International orders are reviewed on a case-by-case basis subject to regulatory compliance and logistics feasibility.';
     }
 
+    // Client launch polish: keep the full disclaimer in the footer only.
+    if (/All products are intended strictly/i.test(text) || /not for human or veterinary use/i.test(text)) {
+      return 'All materials are intended for laboratory research use only.';
+    }
+
     return text;
   };
 
@@ -50,7 +55,7 @@ const FAQ = () => {
     {
       question: 'Are these products for human consumption?',
       answer:
-        'No. All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease.',
+        'All materials are intended for laboratory research use only.',
     },
   ];
 

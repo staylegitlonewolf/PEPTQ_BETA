@@ -16,9 +16,12 @@ function TermsPage() {
   const showRequestAccess = isGuestOrPending && isStoreOn;
 
   const researchUseAgreementLine = 'By accessing this site or completing a purchase, you agree that all materials are for research use only and not for human or veterinary use.';
-  const researchUseDisclaimer = es
-    ? 'Todos los productos estan destinados estrictamente para fines de investigacion en laboratorio. Los productos no son para uso humano ni veterinario y no estan destinados a diagnosticar, tratar, curar o prevenir ninguna enfermedad. Al acceder a este sitio o comprar de PEPTQ, reconoces y aceptas que los materiales se usaran unicamente en cumplimiento con las regulaciones de investigacion aplicables.'
-    : 'All products are intended strictly for laboratory research purposes only. Products are not for human or veterinary use and are not intended to diagnose, treat, cure, or prevent any disease. By accessing this site or purchasing from PEPTQ, you acknowledge and agree that materials will be used solely in compliance with applicable research regulations.';
+  const shortResearchUseLine = es
+    ? 'Todos los materiales estan destinados solo para uso de investigacion en laboratorio.'
+    : 'All materials are intended for laboratory research use only.';
+  const researchUseAgreementLineLocalized = es
+    ? 'Al acceder a este sitio o completar una compra, aceptas que todos los materiales son solo para uso de investigacion y no para uso humano ni veterinario.'
+    : researchUseAgreementLine;
 
   const sections = es ? [
     {
@@ -84,11 +87,10 @@ function TermsPage() {
     {
       title: 'Research Use Only Agreement',
       points: [
-        'All products are intended strictly for laboratory research purposes only.',
+        'All materials are intended for laboratory research use only.',
         'Products are not for human or veterinary use.',
         'You are responsible for ensuring all materials are used in compliance with applicable research regulations.',
       ],
-      quote: researchUseAgreementLine,
     },
     {
       title: 'Eligibility & Verification',
@@ -172,6 +174,15 @@ function TermsPage() {
                     ? 'El acceso institucional de investigacion esta regido por restricciones claras de uso, requisitos de verificacion y responsabilidades de cumplimiento.'
                     : 'Institutional research access is governed by clear usage restrictions, verification requirements, and compliance responsibilities.'}
                 </p>
+
+                <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
+                  <p className="text-sm font-black text-brand-navy dark:text-gray-200 leading-relaxed">
+                    {researchUseAgreementLineLocalized}
+                  </p>
+                  <p className="mt-2 text-xs font-semibold text-brand-navy/65 dark:text-gray-400 leading-relaxed">
+                    {shortResearchUseLine}
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-6 pt-3">
@@ -201,27 +212,11 @@ function TermsPage() {
 
             <div className="xl:w-7/12 w-full bg-white dark:bg-white/5 border-2 border-brand-navy dark:border-white/10 rounded-3xl p-7 md:p-10 shadow-2xl">
               <div className="space-y-7">
-                <div className="rounded-2xl border border-brand-orange/40 bg-brand-orange/10 p-5">
-                  <p className="text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
-                    {researchUseDisclaimer}
-                  </p>
-                  {!es && (
-                    <p className="mt-3 text-sm font-bold text-brand-navy dark:text-gray-200 leading-relaxed">
-                      "{researchUseAgreementLine}"
-                    </p>
-                  )}
-                </div>
-
                 {sections.map((section, index) => (
                   <div key={section.title} className="rounded-2xl border border-brand-navy/15 dark:border-white/15 bg-white dark:bg-black/20 p-5">
                     <h2 className="text-sm md:text-base font-black uppercase tracking-wider text-brand-navy dark:text-white mb-3">
                       {index + 1}. {section.title}
                     </h2>
-                    {section.quote ? (
-                      <p className="mb-3 rounded-xl border border-brand-orange/30 bg-white/60 dark:bg-black/10 p-4 text-sm font-bold text-brand-navy/90 dark:text-gray-200">
-                        "{section.quote}"
-                      </p>
-                    ) : null}
                     <ul className="list-disc pl-5 space-y-2">
                       {section.points.map((point) => (
                         <li key={point} className="text-sm text-brand-navy/75 dark:text-gray-300 leading-relaxed">{point}</li>

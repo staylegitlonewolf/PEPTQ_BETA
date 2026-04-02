@@ -150,10 +150,10 @@ function ComingSoonPage() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-transparent transition-colors duration-300">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
-        <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-8 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
+        <div className="grid w-full gap-8 rounded-3xl border-2 border-brand-navy/15 bg-white/88 p-6 shadow-2xl dark:border-white/10 dark:bg-white/5 sm:p-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <h4 className="mt-6 max-w-3xl whitespace-nowrap text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.05] text-[#112e57] dark:text-white sm:text-6xl">
+            <h4 className="mt-6 max-w-3xl break-words text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.05] text-[#112e57] dark:text-white sm:text-6xl">
               <span className="inline">{text.titleLead} </span>
               <span className="inline text-[#ff7a00]">{text.titleAccent}</span>
             </h4>
@@ -224,7 +224,7 @@ function ComingSoonPage() {
                 <Link to="/terms" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
                   {text.terms}
                 </Link>
-                {' '}and{' '}
+                {' '}{es ? 'y' : 'and'}{' '}
                 <Link to="/terms#privacy-policy" className="underline decoration-[#ff7a00]/60 underline-offset-2 transition hover:text-brand-orange">
                   {text.privacy}
                 </Link>
@@ -259,9 +259,9 @@ function ComingSoonPage() {
 
               <div className="mt-4 grid gap-2 sm:grid-cols-3">
                 {text.trustSignals.map((item) => (
-                  <p key={item} className="inline-flex items-center gap-2 text-[11px] font-bold text-[#28415f] dark:text-gray-200">
-                    <CheckCircle2 size={14} className="text-[#ff7a00]" />
-                    {item}
+                  <p key={item} className="flex items-start gap-2 text-[11px] font-bold text-[#28415f] dark:text-gray-200">
+                    <CheckCircle2 size={14} className="mt-[1px] shrink-0 text-[#ff7a00]" />
+                    <span className="min-w-0 break-words leading-snug">{item}</span>
                   </p>
                 ))}
               </div>

@@ -5,6 +5,22 @@ import { getDynamicFAQ } from '../services/orderService';
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
+  const normalizeFaqAnswer = (answer) => {
+    const text = String(answer || '').trim();
+    if (!text) return '';
+
+    // Ensure PDF-required wording holds even if FAQs are overridden via owner settings.
+    if (/invoice-?based/i.test(text) && /ACH/i.test(text) && /Zelle/i.test(text)) {
+      return 'Payments are processed via approved invoice methods (ACH or Zelle) following account verification and compliance approval.';
+    }
+
+    if (/Orders are evaluated per region/i.test(text)) {
+      return 'International orders are reviewed on a case-by-case basis subject to regulatory compliance and logistics feasibility.';
+    }
+
+    return text;
+  };
+
   const staticFaqs = [
     {
       question: 'Who can order from PEPTQ?',
@@ -39,7 +55,11 @@ const FAQ = () => {
   ];
 
   const dynamicFaqs = getDynamicFAQ();
-  const faqs = Array.isArray(dynamicFaqs) && dynamicFaqs.length ? dynamicFaqs : staticFaqs;
+  const selectedFaqs = Array.isArray(dynamicFaqs) && dynamicFaqs.length ? dynamicFaqs : staticFaqs;
+  const faqs = selectedFaqs.map((faq) => ({
+    ...faq,
+    answer: normalizeFaqAnswer(faq.answer),
+  }));
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);

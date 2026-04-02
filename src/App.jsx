@@ -48,7 +48,7 @@ const navItems = [
   { to: '/about', label: 'About' },
   { to: '/mission', label: 'Mission' },
   { to: '/payment-policy', label: 'Payment & Ordering' },
-  { to: '/terms', label: 'Terms' },
+  { to: '/terms', label: 'Terms & Conditions' },
 ];
 
 // Beta build nav: no owner/member/login surfaces; keep catalog/apply/support/info.
@@ -59,7 +59,7 @@ const betaNavItems = [
   { to: '/about', label: 'About' },
   { to: '/mission', label: 'Mission' },
   { to: '/payment-policy', label: 'Payment & Ordering' },
-  { to: '/terms', label: 'Terms' },
+  { to: '/terms', label: 'Terms & Conditions' },
 ];
 
 const ownerNavItems = [
@@ -1239,7 +1239,11 @@ function AppLayout() {
       '/about': 'About',
       '/mission': 'Mission',
       '/payment-policy': 'Payment & Ordering',
-      '/terms': 'Terms',
+      '/terms': 'Terms & Conditions',
+      '/privacy': 'Privacy Policy',
+      '/shipping': 'Shipping Policy',
+      '/refund': 'Refund Policy',
+      '/contact': 'Contact',
       '/owner': 'Operator',
     };
 

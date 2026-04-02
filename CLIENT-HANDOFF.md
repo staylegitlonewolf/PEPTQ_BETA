@@ -1,4 +1,4 @@
-﻿# PEPTQ BETA Website Client Handoff
+# PEPTQ BETA Website Client Handoff
 
 Updated: 2026-04-02 (America/New_York)
 Repo folder: `C:\Users\Lonewolf\Desktop\BETA_VERSION`
@@ -101,6 +101,4 @@ Latest commits on `main` include:
 These files may exist locally but were intentionally not included in the client update commits:
 - `README.md` (contains internal planning text)
 - `CLIENT_MESSAGE.MD` (local/untracked notes)
-
-
 
